@@ -16,146 +16,380 @@
             --border-color: #E2D3C1;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Martel', serif; background-color: var(--bg-color); color: var(--text-dark); line-height: 1.8; padding-bottom: 60px; }
-        header { background-color: var(--primary); color: #FFF; text-align: center; padding: 2.5rem 1rem; border-bottom: 5px solid var(--secondary); }
-        header h1 { font-family: 'Rozha One', serif; font-size: 2.8rem; color: var(--secondary); margin-bottom: 0.3rem; }
-        nav { background-color: #5C1929; padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
-        nav a, nav button { color: #FFF; text-decoration: none; background: none; border: none; font-size: 1rem; cursor: pointer; padding: 6px 12px; border-radius: 4px; transition: 0.3s; }
-        nav a:hover, nav button:hover { background-color: var(--secondary); color: var(--primary); }
-        .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-        .btn-primary { background-color: var(--accent); color: white; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
-        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .paywall { background: #FFF8E7; border: 1px dashed var(--accent); padding: 20px; text-align: center; border-radius: 6px; margin-top: 15px; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: var(--card-bg); padding: 2rem; border-radius: 8px; width: 90%; max-width: 500px; position: relative; }
-        .close { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; }
-        input, textarea, select { width: 100%; padding: 10px; margin: 8px 0 16px; border: 1px solid var(--border-color); border-radius: 4px; }
-        footer { text-align: center; padding: 2rem; background: var(--primary); color: white; position: fixed; bottom: 0; width: 100%; border-top: 4px solid var(--secondary); }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Martel', serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.8;
+            background-image: radial-gradient(#d4af3733 1px, transparent 1px);
+            background-size: 20px 20px;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: #FFF;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-bottom: 5px solid var(--secondary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-family: 'Rozha One', serif;
+            font-size: 2.8rem;
+            color: var(--secondary);
+            margin-bottom: 0.3rem;
+            letter-spacing: 1px;
+        }
+
+        header .author-subtitle {
+            font-size: 1.1rem;
+            color: #F7E7CE;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        nav {
+            background-color: #5C1929;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a, nav button {
+            color: #FFF;
+            text-decoration: none;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        nav a:hover, nav button:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .card h2 {
+            font-family: 'Yatra One', cursive;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .content-preview {
+            position: relative;
+            max-height: 100px;
+            overflow: hidden;
+            white-space: pre-line;
+        }
+
+        .content-preview::after {
+            content: "";
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 50px;
+            background: linear-gradient(transparent, var(--card-bg));
+        }
+
+        .full-content {
+            white-space: pre-line;
+            margin-top: 10px;
+        }
+
+        .paywall-box {
+            background: #FFF8E7;
+            border: 1px dashed var(--accent);
+            padding: 15px;
+            text-align: center;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px; right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--primary);
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 4px solid var(--secondary);
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>साहित्य ढाणी</h1>
-    <p>उत्कृष्ट राजस्थानी साहित्य का डिजिटल संग्रह</p>
-</header>
+    <header>
+        <h1>साहित्य ढाणी</h1>
+        <div class="author-subtitle">रचनाकार: रंजू कंवर चारण</div>
+        <p style="font-size: 0.95rem; margin-top: 5px; color: #F7E7CE;">उत्कृष्ट साहित्य एवं सांस्कृतिक कृतियों का ऑनलाइन संग्रह</p>
+    </header>
 
-<nav>
-    <div>
-        <a href="#">होम</a>
-        <button onclick="displayPosts('all')">सभी रचनाएं</button>
-    </div>
-    <div>
-        <button id="loginBtn" onclick="openModal('loginModal')">लेखक लॉगिन</button>
-    </div>
-</nav>
-
-<div class="container" id="postsContainer">
-    <!-- रचनाएं यहाँ दिखेंगी -->
-</div>
-
-<!-- सदस्यता लें मोडाल -->
-<div id="paymentModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('paymentModal')">&times;</span>
-        <h2>साहित्य ढाणी सदस्यता</h2>
-        <p style="margin: 15px 0;">सभी प्रीमियम रचनाएं और ई-बुक्स पढ़ने के लिए, कृपया सदस्यता लें।</p>
-        <div style="background: #eee; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
-            <p><strong>भुगतान विकल्प:</strong></p>
-            <p>UPI ID: **(यहाँ अपनी UPI ID लिखें, जैसे you@upi)**</p>
-            <p>या इस लिंक पर क्लिक करें: <a href="**(यहाँ अपना Payment Link डालें, जैसे Paytm/PayPal)**" target="_blank">भुगतान करें</a></p>
+    <nav>
+        <div class="nav-links">
+            <button onclick="displayPosts('all')">मुख्य पृष्ठ</button>
+            <button onclick="displayPosts('कविता')">कविताएं</button>
+            <button onclick="displayPosts('कहानी')">कहानियां</button>
+            <button onclick="displayPosts('ई-बुक')">ई-बुक्स</button>
         </div>
-        <p>भुगतान के बाद, हमें अपना स्क्रीनशॉट **(यहाँ अपना WhatsApp नंबर लिखें)** पर भेजें।</p>
-        <button class="btn-primary" style="margin-top: 15px;" onclick="closeModal('paymentModal')">ठीक है</button>
+        <div>
+            <button onclick="openModal('publishModal')" class="btn-primary">+ नई रचना</button>
+            <button id="loginBtn" onclick="openModal('loginModal')">लेखक लॉगिन</button>
+        </div>
+    </nav>
+
+    <div class="container" id="postsContainer">
+        <!-- रचनाएं यहाँ प्रदर्शित होंगी -->
     </div>
-</div>
 
-<!-- लॉगिन मोडाल -->
-<div id="loginModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('loginModal')">&times;</span>
-        <h2>लेखक लॉगिन</h2>
-        <input type="text" id="authorName" placeholder="आपका नाम">
-        <input type="password" id="authorPass" placeholder="पासवर्ड (सिर्फ़ लेखकों के लिए)">
-        <button class="btn-primary" onclick="login()">लॉगिन</button>
+    <!-- नई रचना पब्लिश करने का फॉर्म -->
+    <div id="publishModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('publishModal')">&times;</span>
+            <h2>नई रचना जोड़ें</h2>
+            <input type="text" id="postTitle" placeholder="शीर्षक (Title)">
+            <select id="postCategory">
+                <option value="कविता">कविता</option>
+                <option value="कहानी">कहानी</option>
+                <option value="ई-बुक">ई-बुक</option>
+            </select>
+            <textarea id="postContent" rows="6" placeholder="अपनी रचना या सामग्री यहाँ लिखें..."></textarea>
+            <label><input type="checkbox" id="isPaid"> क्या यह पेड (Paid) सामग्री है?</label>
+            <input type="number" id="postPrice" placeholder="कीमत (₹ में, जैसे 10, 50, 100)" style="display:none;">
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button class="btn-primary" onclick="savePost()">पब्लिश करें</button>
+                <button onclick="closeModal('publishModal')">रद्द करें</button>
+            </div>
+        </div>
     </div>
-</div>
 
-<footer>
-    <p>© 2026 साहित्य ढाणी | सर्वाधिकार सुरक्षित</p>
-</footer>
+    <!-- लेखक लॉगिन -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>लेखक लॉगिन / प्रोफाइल</h2>
+            <input type="text" id="authorName" placeholder="आपका नाम / पेन नेम">
+            <button class="btn-primary" onclick="loginAuthor()">लॉगिन करें</button>
+        </div>
+    </div>
 
-<script>
-    const posts = [
-        { id: 1, title: "वीरमदेव री वात", category: "कहानी", author: "प्रताप सिंह", content: "यह एक मुफ़्त कहानी का डेमो है। पूरी रचनाएँ देखने के लिए लॉगिन करें।" },
-        { id: 2, title: "धोरा री धरती", category: "कविता", author: "राजू सिंह", content: "यह एक प्रीमियम कविता है।", premium: true }
-    ];
+    <!-- पेमेंट एवं अनलॉक विंडो -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('paymentModal')">&times;</span>
+            <h2>रचना अनलॉक करें</h2>
+            <p id="payModalText" style="margin: 15px 0;"></p>
+            <div style="background: #FFF8E7; padding: 15px; border-radius: 5px; border: 1px dashed var(--accent); margin-bottom: 15px;">
+                <p><strong>भुगतान करने के तरीके:</strong></p>
+                <p style="margin-top: 5px;">📍 <strong>UPI ID:</strong> (यहाँ अपनी UPI ID लिखें)</p>
+                <p style="margin-top: 5px;">🔗 <strong>Paytm / Payment Link:</strong> <a href="#" target="_blank">यहाँ क्लिक करें</a></p>
+            </div>
+            <p style="font-size: 0.9rem; color: #555;">भुगतान करने के बाद स्क्रीनशॉट लेखक को व्हाट्सएप पर भेजें।</p>
+            <button class="btn-primary" style="margin-top: 15px; width: 100%;" onclick="closeModal('paymentModal')">ठीक है (Close)</button>
+        </div>
+    </div>
 
-    function displayPosts(filter) {
-        const container = document.getElementById('postsContainer');
-        container.innerHTML = '';
-        const isLoggedIn = localStorage.getItem('sd_loggedIn') === 'true';
+    <footer>
+        <p>© 2026 साहित्य ढाणी | सर्वाधिकार सुरक्षित</p>
+    </footer>
 
-        posts.forEach(post => {
-            if (filter !== 'all' && post.category !== filter) return;
-
-            const card = document.createElement('div');
-            card.className = 'card';
-            
-            if (post.premium && !isLoggedIn) {
-                card.innerHTML = `
-                    <h2>${post.title}</h2>
-                    <p style="color: #666;">लेखक: ${post.author} | श्रेणी: ${post.category}</p>
-                    <div class="paywall">
-                        <p>🔒 यह रचना सिर्फ़ सदस्यों के लिए है।</p>
-                        <button class="btn-primary" style="margin-top: 10px;" onclick="openModal('paymentModal')">सदस्यता लें</button>
-                    </div>
-                `;
-            } else {
-                card.innerHTML = `
-                    <h2>${post.title}</h2>
-                    <p style="color: #666;">लेखक: ${post.author} | श्रेणी: ${post.category}</p>
-                    <p style="margin-top: 10px; white-space: pre-wrap;">${post.content}</p>
-                `;
+    <script>
+        let posts = JSON.parse(localStorage.getItem('sahitya_posts')) || [
+            {
+                id: 1,
+                title: "केसरिया बालम",
+                category: "कविता",
+                author: "रंजू कंवर चारण",
+                content: "केसरिया बालम आवो नी, पधारो म्हारे देस।\nमरुधरा री पावन माटी, गावे रीत अणेक।\nरंग-बिरंगी थारी धोरा री धरती, सुहानी लागे सांज।",
+                isPaid: false,
+                price: 0
+            },
+            {
+                id: 2,
+                title: "राजपूती संस्कृति एवं इतिहास (ई-बुक)",
+                category: "ई-बुक",
+                author: "रंजू कंवर चारण",
+                content: "इस ई-बुक में राजपूती परंपराओं, ऐतिहासिक धरोहरों और सांस्कृतिक गौरव का विस्तृत वर्णन है।\n\n[यह पेड सामग्री है। पूरा पढ़ने के लिए भुगतान करें।]",
+                isPaid: true,
+                price: 50
             }
-            container.appendChild(card);
+        ];
+
+        function displayPosts(filter = 'all') {
+            const container = document.getElementById('postsContainer');
+            container.innerHTML = '';
+
+            const filtered = filter === 'all' ? posts : posts.filter(p => p.category === filter);
+
+            filtered.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                let contentHTML = '';
+                if(post.isPaid) {
+                    contentHTML = `
+                        <div class="content-preview">${post.content}</div>
+                        <div class="paywall-box">
+                            <p>🔒 इस पूरी रचना/ई-बुक को पढ़ने की कीमत: <strong>₹${post.price}</strong></p>
+                            <button class="btn-primary" style="margin-top:8px;" onclick="openPaymentModal(${post.price}, '${post.title}')">अभी ख़रीदें / अनलॉक करें (Pay ₹${post.price})</button>
+                        </div>
+                    `;
+                } else {
+                    contentHTML = `<div class="full-content">${post.content}</div>`;
+                }
+
+                card.innerHTML = `
+                    <span class="badge">${post.category}</span>
+                    <h2>${post.title}</h2>
+                    <small style="color:#666;">रचनाकार: ${post.author}</small>
+                    ${contentHTML}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        document.getElementById('isPaid').addEventListener('change', function() {
+            document.getElementById('postPrice').style.display = this.checked ? 'block' : 'none';
         });
-    }
 
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    
-    function login() {
-        const name = document.getElementById('authorName').value;
-        if (name) {
-            localStorage.setItem('sd_loggedIn', 'true');
-            localStorage.setItem('sd_authorName', name);
-            document.getElementById('loginBtn').innerText = name + " (लॉगआउट)";
-            document.getElementById('loginBtn').onclick = logout;
-            closeModal('loginModal');
-            displayPosts('all');
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function openPaymentModal(price, title) {
+            document.getElementById('payModalText').innerText = `"${title}" को अनलॉक करने के लिए ₹${price} का भुगतान करें।`;
+            openModal('paymentModal');
         }
-    }
 
-    function logout() {
-        localStorage.removeItem('sd_loggedIn');
-        localStorage.removeItem('sd_authorName');
-        document.getElementById('loginBtn').innerText = "लेखक लॉगिन";
-        document.getElementById('loginBtn').onclick = () => openModal('loginModal');
-        displayPosts('all');
-    }
-
-    window.onload = function() {
-        const isLoggedIn = localStorage.getItem('sd_loggedIn') === 'true';
-        if (isLoggedIn) {
-            const name = localStorage.getItem('sd_authorName');
-            document.getElementById('loginBtn').innerText = name + " (लॉगआउट)";
-            document.getElementById('loginBtn').onclick = logout;
+        function loginAuthor() {
+            const name = document.getElementById('authorName').value;
+            if(name) {
+                localStorage.setItem('sahitya_author', name);
+                document.getElementById('loginBtn').innerText = name;
+                closeModal('loginModal');
+            }
         }
-        displayPosts('all');
-    }
-</script>
 
+        function savePost() {
+            const title = document.getElementById('postTitle').value;
+            const category = document.getElementById('postCategory').value;
+            const content = document.getElementById('postContent').value;
+            const isPaid = document.getElementById('isPaid').checked;
+            const price = document.getElementById('postPrice').value || 0;
+            const author = localStorage.getItem('sahitya_author') || 'रंजू कंवर चारण';
+
+            if(!title || !content) {
+                alert('कृपया शीर्षक और सामग्री दोनों लिखें!');
+                return;
+            }
+
+            const newPost = { id: Date.now(), title, category, content, isPaid, price, author };
+            posts.unshift(newPost);
+            localStorage.setItem('sahitya_posts', JSON.stringify(posts));
+            displayPosts();
+            closeModal('publishModal');
+        }
+
+        window.onload = function() {
+            const savedAuthor = localStorage.getItem('sahitya_author');
+            if(savedAuthor) document.getElementById('loginBtn').innerText = savedAuthor;
+            displayPosts();
+        }
+    </script>
 </body>
 </html>
