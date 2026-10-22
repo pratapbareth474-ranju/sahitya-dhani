@@ -24,7 +24,7 @@
             line-height: 1.8;
             background-image: radial-gradient(#d4af3733 1px, transparent 1px);
             background-size: 20px 20px;
-            padding-bottom: 70px;
+            padding-bottom: 90px;
         }
 
         header {
@@ -94,18 +94,32 @@
             font-family: inherit;
         }
 
-        .btn-whatsapp {
-            background-color: #25D366;
+        .btn-pay-direct {
+            background-color: #28a745;
             color: white;
-            padding: 8px 14px;
+            padding: 12px 18px;
             border: none;
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
+            display: block;
+            margin: 12px 0;
+            font-size: 1.05rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(40,167,69,0.3);
+        }
+
+        .btn-contact-wa {
+            background-color: #25D366;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
             display: inline-block;
-            margin-top: 10px;
-            font-size: 0.9rem;
+            margin-top: 5px;
         }
 
         .admin-btn-group {
@@ -200,6 +214,7 @@
             width: 90%;
             max-width: 480px;
             position: relative;
+            text-align: center;
         }
 
         .close {
@@ -217,6 +232,7 @@
             border: 1px solid var(--border-color);
             border-radius: 4px;
             font-family: inherit;
+            text-align: left;
         }
 
         footer {
@@ -228,7 +244,7 @@
             bottom: 0;
             width: 100%;
             border-top: 4px solid var(--secondary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .admin-controls {
@@ -238,6 +254,15 @@
             border-radius: 6px;
             margin-bottom: 15px;
             font-size: 0.9rem;
+        }
+
+        #qrCodeImg {
+            width: 160px;
+            height: 160px;
+            margin: 10px auto;
+            display: block;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -288,7 +313,7 @@
                 <option value="छंद">छंद</option>
             </select>
             <textarea id="postContent" rows="6" placeholder="सामग्री यहाँ लिखें..."></textarea>
-            <label><input type="checkbox" id="isPaid"> क्या यह पेड (Paid) सामग्री है?</label>
+            <label style="display:block; text-align:left;"><input type="checkbox" id="isPaid"> क्या यह पेड (Paid) सामग्री है?</label>
             <input type="number" id="postPrice" placeholder="कीमत ₹ में (जैसे: 10, 15, 20, 50)" style="display:none;">
             <div style="display:flex; gap:10px; margin-top:10px;">
                 <button class="btn-primary" onclick="savePost()">सुरक्षित करें</button>
@@ -302,7 +327,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('adminModal')">&times;</span>
             <h2>एडमिन लॉगिन (रंजू कंवर चारण)</h2>
-            <p style="font-size:0.85rem; color:#666; margin-bottom:8px;">पासकोड दर्ज करें (डिफ़ॉल्ट पासकोड: <strong>1234</strong>)</p>
+            <p style="font-size:0.85rem; color:#666; margin-bottom:8px; text-align:left;">पासकोड दर्ज करें (डिफ़ॉल्ट पासकोड: <strong>1234</strong>)</p>
             <input type="password" id="adminPassCode" placeholder="एडमिन पासकोड">
             <button class="btn-primary" style="width:100%;" onclick="loginAdmin()">लॉगिन करें</button>
         </div>
@@ -318,32 +343,37 @@
         </div>
     </div>
 
-    <!-- पेमेंट एवं व्हाट्सएप अनलॉक मोडल -->
+    <!-- भुगतान मोडल (केवल UPI लिंक और QR कोड) -->
     <div id="paymentModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('paymentModal')">&times;</span>
-            <h2>रचना अनलॉक करें</h2>
-            <p id="payModalText" style="margin: 15px 0;"></p>
-            <div style="background: #FFF8E7; padding: 12px; border-radius: 5px; border: 1px dashed var(--accent); margin-bottom: 12px;">
-                <p><strong>भुगतान करने की जानकारी:</strong></p>
-                <p style="margin-top: 6px;">📍 <strong>Google Pay / PhonePe / Paytm UPI:</strong></p>
-                <p style="font-weight: bold; color: var(--primary); font-size: 1.1rem; margin-bottom: 8px;" id="displayUpiId">7665085315@ybl</p>
-                <p style="font-size: 0.85rem; color: #555;">ऊपर दिए गए UPI ID पर भुगतान करके व्हाट्सएप पर स्क्रीनशॉट भेजें।</p>
+            <h2 style="color: var(--primary);">ऑनलाइन भुगतान करें</h2>
+            <p id="payModalText" style="margin: 10px 0; font-weight: bold;"></p>
+            
+            <!-- सीधा UPI भुगतान बटन -->
+            <a id="directUpiPayBtn" href="#" class="btn-pay-direct">📲 GPay / PhonePe / Paytm से ₹ पे करें</a>
+
+            <div style="background: #FFF8E7; padding: 12px; border-radius: 5px; border: 1px dashed var(--accent); margin: 10px 0;">
+                <p style="font-size: 0.9rem;"><strong>या QR Code स्कैन करके पे करें:</strong></p>
+                <img id="qrCodeImg" src="" alt="UPI QR Code">
+                <p style="font-size: 0.85rem; color: #555; margin-top: 4px;">UPI ID: <strong id="displayUpiId" style="color: var(--primary);"></strong></p>
             </div>
-            <a id="whatsappBtn" href="#" target="_blank" class="btn-whatsapp" style="width: 100%; text-align: center;">📲 व्हाट्सएप पर स्क्रीनशॉट भेजें</a>
+
             <button class="btn-primary" style="width: 100%; margin-top: 8px; background-color: #777;" onclick="closeModal('paymentModal')">बंद करें</button>
         </div>
     </div>
 
     <footer>
         <p>© 2026 साहित्य ढाणी | लेखिका रंजू कंवर चारण</p>
+        <p style="margin-top: 4px; font-size: 0.8rem;">
+            📞 अन्य जानकारी या सहायता हेतु: 
+            <a id="footerWaBtn" href="#" target="_blank" class="btn-contact-wa">💬 व्हाट्सएप से संपर्क करें</a>
+        </p>
     </footer>
 
     <script>
-        // ==========================================
-        // ✏️ आपकी सेट की गई UPI ID और WhatsApp नंबर:
-        // ==========================================
         const MY_UPI_ID = "7665085315@ybl";
+        const MY_NAME = "Ranju Kanwar Charan";
         const MY_WHATSAPP_NUMBER = "918005928244";
         const ADMIN_PASS = "1234";
 
@@ -362,7 +392,7 @@
                 title: "श्री करणी माता जी री चिरजां",
                 category: "चिरजां",
                 author: "रंजू कंवर चारण",
-                content: "जय करणी जय आवड़ माता, मरुधरा री रक्षक दाता।\n\n[यह विशेष चिरजां है। पूरी पढ़ने के लिए ₹10 का भुगतान करें।]",
+                content: "जय करणी जय आवड़ माता, मरुधरा री रक्षक दाता।\n\n[यह विशेष चिरजां है। पूरी पढ़ने के लिए शुल्क का भुगतान करें।]",
                 isPaid: true,
                 price: 10
             }
@@ -544,13 +574,22 @@
             document.getElementById('payModalText').innerText = `"${title}" को अनलॉक करने के लिए ₹${price} का भुगतान करें।`;
             document.getElementById('displayUpiId').innerText = MY_UPI_ID;
             
-            const waText = encodeURIComponent(`नमस्ते! मैंने आपकी साहित्य ढाणी वेबसाइट पर "${title}" (₹${price}) का भुगतान कर दिया है। कृपया मुझे इसकी पूरी सामग्री अनलॉक करने की अनुमति दें।`);
-            document.getElementById('whatsappBtn').href = `https://wa.me/${MY_WHATSAPP_NUMBER}?text=${waText}`;
+            // सीधा UPI पेमेंट लिंक
+            const upiLink = `upi://pay?pa=${MY_UPI_ID}&pn=${encodeURIComponent(MY_NAME)}&tn=${encodeURIComponent(title)}&am=${price}&cu=INR`;
+            document.getElementById('directUpiPayBtn').href = upiLink;
+
+            // QR Code जनरेट करें
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+            document.getElementById('qrCodeImg').src = qrUrl;
 
             openModal('paymentModal');
         }
 
         window.onload = function() {
+            // फ़ुटर में व्हाट्सएप लिंक सेट करना
+            const waInfoText = encodeURIComponent(`नमस्ते लेखिका रंजू कंवर जी! मुझे साहित्य ढाणी वेबसाइट के संबंध में जानकारी चाहिए।`);
+            document.getElementById('footerWaBtn').href = `https://wa.me/${MY_WHATSAPP_NUMBER}?text=${waInfoText}`;
+
             checkAuthStatus();
             displayPosts();
         }
