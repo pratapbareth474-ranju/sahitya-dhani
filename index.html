@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>साहित्य ढाणी | Sahitya Dhani</title>
+    <title>साहित्य ढाणी | लेखिका रंजू कंवर चारण</title>
     <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Yatra+One&family=Martel:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -50,9 +50,9 @@
         }
 
         header .author-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: #F7E7CE;
-            font-style: italic;
+            font-weight: bold;
             margin-top: 5px;
         }
 
@@ -217,8 +217,8 @@
 
     <header>
         <h1>साहित्य ढाणी</h1>
-        <div class="author-subtitle">रचनाकार: रंजू कंवर चारण</div>
-        <p style="font-size: 0.95rem; margin-top: 5px; color: #F7E7CE;">उत्कृष्ट साहित्य एवं सांस्कृतिक कृतियों का ऑनलाइन संग्रह</p>
+        <div class="author-subtitle">संचालित: लेखिका रंजू कंवर चारण</div>
+        <p style="font-size: 0.95rem; margin-top: 5px; color: #F7E7CE;">उत्कृष्ट साहित्य एवं मौलिक कृतियों का डिजिटल संग्रह</p>
     </header>
 
     <nav>
@@ -229,8 +229,8 @@
             <button onclick="displayPosts('ई-बुक')">ई-बुक्स</button>
         </div>
         <div>
-            <button onclick="openModal('publishModal')" class="btn-primary">+ नई रचना</button>
-            <button id="loginBtn" onclick="openModal('loginModal')">लेखक लॉगिन</button>
+            <button onclick="openModal('publishModal')" class="btn-primary">+ नई रचना जोड़ें</button>
+            <button id="loginBtn" onclick="openModal('loginModal')">लेखिका लॉगिन</button>
         </div>
     </nav>
 
@@ -242,7 +242,7 @@
     <div id="publishModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('publishModal')">&times;</span>
-            <h2>नई रचना जोड़ें</h2>
+            <h2>नई रचना पब्लिश करें</h2>
             <input type="text" id="postTitle" placeholder="शीर्षक (Title)">
             <select id="postCategory">
                 <option value="कविता">कविता</option>
@@ -251,7 +251,7 @@
             </select>
             <textarea id="postContent" rows="6" placeholder="अपनी रचना या सामग्री यहाँ लिखें..."></textarea>
             <label><input type="checkbox" id="isPaid"> क्या यह पेड (Paid) सामग्री है?</label>
-            <input type="number" id="postPrice" placeholder="कीमत (₹ में, जैसे 10, 50, 100)" style="display:none;">
+            <input type="number" id="postPrice" placeholder="कीमत ₹ में (जैसे: 10, 15, 20, 50)" style="display:none;">
             <div style="display:flex; gap:10px; margin-top:10px;">
                 <button class="btn-primary" onclick="savePost()">पब्लिश करें</button>
                 <button onclick="closeModal('publishModal')">रद्द करें</button>
@@ -259,12 +259,12 @@
         </div>
     </div>
 
-    <!-- लेखक लॉगिन -->
+    <!-- लेखिका लॉगिन -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('loginModal')">&times;</span>
-            <h2>लेखक लॉगिन / प्रोफाइल</h2>
-            <input type="text" id="authorName" placeholder="आपका नाम / पेन नेम">
+            <h2>लेखिका पैनल</h2>
+            <input type="text" id="authorName" placeholder="आपका नाम (रंजू कंवर चारण)">
             <button class="btn-primary" onclick="loginAuthor()">लॉगिन करें</button>
         </div>
     </div>
@@ -276,38 +276,38 @@
             <h2>रचना अनलॉक करें</h2>
             <p id="payModalText" style="margin: 15px 0;"></p>
             <div style="background: #FFF8E7; padding: 15px; border-radius: 5px; border: 1px dashed var(--accent); margin-bottom: 15px;">
-                <p><strong>भुगतान करने के तरीके:</strong></p>
-                <p style="margin-top: 5px;">📍 <strong>UPI ID:</strong> (यहाँ अपनी UPI ID लिखें)</p>
-                <p style="margin-top: 5px;">🔗 <strong>Paytm / Payment Link:</strong> <a href="#" target="_blank">यहाँ क्लिक करें</a></p>
+                <p><strong>भुगतान करने के विकल्प:</strong></p>
+                <p style="margin-top: 5px;">📍 <strong>Google Pay / PhonePe / Paytm UPI:</strong> (अपनी UPI ID यहाँ लिखें)</p>
+                <p style="margin-top: 5px;">📱 <strong>WhatsApp संपर्क:</strong> (अपना नंबर दर्ज करें)</p>
             </div>
-            <p style="font-size: 0.9rem; color: #555;">भुगतान करने के बाद स्क्रीनशॉट लेखक को व्हाट्सएप पर भेजें।</p>
+            <p style="font-size: 0.9rem; color: #555;">भुगतान के बाद स्क्रीनशॉट भेजकर पूरी रचना का एक्सेस प्राप्त करें।</p>
             <button class="btn-primary" style="margin-top: 15px; width: 100%;" onclick="closeModal('paymentModal')">ठीक है (Close)</button>
         </div>
     </div>
 
     <footer>
-        <p>© 2026 साहित्य ढाणी | सर्वाधिकार सुरक्षित</p>
+        <p>© 2026 साहित्य ढाणी | लेखिका रंजू कंवर चारण</p>
     </footer>
 
     <script>
         let posts = JSON.parse(localStorage.getItem('sahitya_posts')) || [
             {
                 id: 1,
-                title: "केसरिया बालम",
+                title: "केसरिया बालम री हेत",
                 category: "कविता",
                 author: "रंजू कंवर चारण",
-                content: "केसरिया बालम आवो नी, पधारो म्हारे देस।\nमरुधरा री पावन माटी, गावे रीत अणेक।\nरंग-बिरंगी थारी धोरा री धरती, सुहानी लागे सांज।",
+                content: "मरुधरा री पावन माटी, गावे रीत अणेक।\nकेसरिया बालम आवो नी, पधारो म्हारे देस।\nरंग-बिरंगी थारी धोरा री धरती, सुहानी लागे सांज।",
                 isPaid: false,
                 price: 0
             },
             {
                 id: 2,
-                title: "राजपूती संस्कृति एवं इतिहास (ई-बुक)",
-                category: "ई-बुक",
+                title: "राजस्थान रो सांस्कृतिक गौरव (विशेष लेख)",
+                category: "कहानी",
                 author: "रंजू कंवर चारण",
-                content: "इस ई-बुक में राजपूती परंपराओं, ऐतिहासिक धरोहरों और सांस्कृतिक गौरव का विस्तृत वर्णन है।\n\n[यह पेड सामग्री है। पूरा पढ़ने के लिए भुगतान करें।]",
+                content: "राजस्थान री संस्कृति दुनिया मांही अनोखी और अद्भुत मानी जावे है। अठे रो इतिहास शौर्य और त्याग री गाथावां सूं भर्योड़ो है।\n\n[यह विशेष रचना है। पूरी सामग्री पढ़ने के लिए निर्धारित शुल्क का भुगतान करें।]",
                 isPaid: true,
-                price: 50
+                price: 15
             }
         ];
 
@@ -326,8 +326,8 @@
                     contentHTML = `
                         <div class="content-preview">${post.content}</div>
                         <div class="paywall-box">
-                            <p>🔒 इस पूरी रचना/ई-बुक को पढ़ने की कीमत: <strong>₹${post.price}</strong></p>
-                            <button class="btn-primary" style="margin-top:8px;" onclick="openPaymentModal(${post.price}, '${post.title}')">अभी ख़रीदें / अनलॉक करें (Pay ₹${post.price})</button>
+                            <p>🔒 इस रचना को पूरा पढ़ने का शुल्क: <strong>₹${post.price}</strong></p>
+                            <button class="btn-primary" style="margin-top:8px;" onclick="openPaymentModal(${post.price}, '${post.title}')">अभी अनलॉक करें (Pay ₹${post.price})</button>
                         </div>
                     `;
                 } else {
@@ -337,7 +337,7 @@
                 card.innerHTML = `
                     <span class="badge">${post.category}</span>
                     <h2>${post.title}</h2>
-                    <small style="color:#666;">रचनाकार: ${post.author}</small>
+                    <small style="color:#666;">लेखिका: ${post.author}</small>
                     ${contentHTML}
                 `;
                 container.appendChild(card);
@@ -352,7 +352,7 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function openPaymentModal(price, title) {
-            document.getElementById('payModalText').innerText = `"${title}" को अनलॉक करने के लिए ₹${price} का भुगतान करें।`;
+            document.getElementById('payModalText').innerText = `"${title}" को पढ़ने के लिए ₹${price} का भुगतान करें।`;
             openModal('paymentModal');
         }
 
@@ -374,7 +374,7 @@
             const author = localStorage.getItem('sahitya_author') || 'रंजू कंवर चारण';
 
             if(!title || !content) {
-                alert('कृपया शीर्षक और सामग्री दोनों लिखें!');
+                alert('कृपया शीर्षक और सामग्री दोनों भरें!');
                 return;
             }
 
