@@ -62,7 +62,7 @@
             z-index: 100;
         }
 
-        nav .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+        nav .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
 
         nav button {
             color: #FFF;
@@ -240,6 +240,9 @@
             <button onclick="displayPosts('कविता')">कविताएं</button>
             <button onclick="displayPosts('कहानी')">कहानियां</button>
             <button onclick="displayPosts('ई-बुक')">ई-बुक्स</button>
+            <button onclick="displayPosts('चिरजा')">चिरजा (माता जी री)</button>
+            <button onclick="displayPosts('भजन')">भजन</button>
+            <button onclick="displayPosts('छंद')">छंद</button>
         </div>
         <div>
             <button id="addPostBtn" onclick="openPublishModal()" class="btn-primary" style="display:none;">+ नई रचना जोड़ें</button>
@@ -266,6 +269,9 @@
                 <option value="कविता">कविता</option>
                 <option value="कहानी">कहानी</option>
                 <option value="ई-बुक">ई-बुक</option>
+                <option value="चिरजा">चिरजा (माता जी री)</option>
+                <option value="भजन">भजन</option>
+                <option value="छंद">छंद</option>
             </select>
             <textarea id="postContent" rows="6" placeholder="सामग्री यहाँ लिखें..."></textarea>
             <label><input type="checkbox" id="isPaid"> क्या यह पेड (Paid) सामग्री है?</label>
@@ -306,8 +312,8 @@
             <p id="payModalText" style="margin: 15px 0;"></p>
             <div style="background: #FFF8E7; padding: 12px; border-radius: 5px; border: 1px dashed var(--accent); margin-bottom: 12px;">
                 <p><strong>भुगतान विकल्प:</strong></p>
-                <p style="margin-top: 4px;">📍 <strong>Google Pay / Paytm UPI:</strong> (यहाँ अपनी UPI ID लिखें)</p>
-                <p style="margin-top: 4px;">📱 <strong>WhatsApp:</strong> (अपना नंबर दर्ज करें)</p>
+                <p style="margin-top: 4px;">📍 <strong>Google Pay / Paytm UPI:</strong> (अपनी UPI ID यहाँ लिखें)</p>
+                <p style="margin-top: 4px;">📱 <strong>WhatsApp:</strong> (अपना व्हाट्सएप नंबर यहाँ लिखें)</p>
             </div>
             <button class="btn-primary" style="width: 100%;" onclick="closeModal('paymentModal')">ठीक है (Close)</button>
         </div>
@@ -332,12 +338,12 @@
             },
             {
                 id: 2,
-                title: "राजपूती संस्कृति एवं इतिहास",
-                category: "कहानी",
+                title: "श्री करणी माता जी री चिरजा",
+                category: "चिरजा",
                 author: "रंजू कंवर चारण",
-                content: "राजस्थान री संस्कृति दुनिया मांही अनोखी और अद्भुत मानी जावे है।\n\n[यह विशेष रचना है। इसे पूरा पढ़ने के लिए ₹15 का भुगतान करें।]",
+                content: "जय करणी जय आवड़ माता, मरुधरा री रक्षक दाता।\n\n[यह विशेष चिरजा है। पूरी पढ़ने के लिए ₹10 का भुगतान करें।]",
                 isPaid: true,
-                price: 15
+                price: 10
             }
         ];
 
@@ -381,7 +387,7 @@
                 let adminControls = isAdmin ? `
                     <div class="admin-btn-group">
                         <button class="btn-edit" onclick="editPost(${post.id})">✏️ एडिट</button>
-                        <button class="btn-danger" onclick="deletePost(${post.id})">❌ हटाएं</button>
+                        <button class="btn-danger" onclick="deletePost(${post.id})">❌ बताएं/हटाएं</button>
                     </div>` : '';
 
                 let contentHTML = '';
@@ -487,7 +493,6 @@
             }
 
             if (editId) {
-                // मौजूदा पोस्ट को अपडेट (एडिट) करना
                 let post = posts.find(p => p.id == editId);
                 if (post) {
                     post.title = title;
@@ -497,7 +502,6 @@
                     post.price = price;
                 }
             } else {
-                // नई पोस्ट जोड़ना
                 const newPost = { id: Date.now(), title, category, content, isPaid, price, author: 'रंजू कंवर चारण' };
                 posts.unshift(newPost);
             }
