@@ -94,6 +94,20 @@
             font-family: inherit;
         }
 
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
         .admin-btn-group {
             float: right;
             display: flex;
@@ -240,7 +254,7 @@
             <button onclick="displayPosts('कविता')">कविताएं</button>
             <button onclick="displayPosts('कहानी')">कहानियां</button>
             <button onclick="displayPosts('ई-बुक')">ई-बुक्स</button>
-            <button onclick="displayPosts('चिरजा')">चिरजा (माता जी री)</button>
+            <button onclick="displayPosts('चिरजां')">चिरजां (माता जी री)</button>
             <button onclick="displayPosts('भजन')">भजन</button>
             <button onclick="displayPosts('छंद')">छंद</button>
         </div>
@@ -269,7 +283,7 @@
                 <option value="कविता">कविता</option>
                 <option value="कहानी">कहानी</option>
                 <option value="ई-बुक">ई-बुक</option>
-                <option value="चिरजा">चिरजा (माता जी री)</option>
+                <option value="चिरजां">चिरजां (माता जी री)</option>
                 <option value="भजन">भजन</option>
                 <option value="छंद">छंद</option>
             </select>
@@ -304,18 +318,20 @@
         </div>
     </div>
 
-    <!-- पेमेंट अनलॉक मोडल -->
+    <!-- पेमेंट एवं व्हाट्सएप अनलॉक मोडल -->
     <div id="paymentModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('paymentModal')">&times;</span>
             <h2>रचना अनलॉक करें</h2>
             <p id="payModalText" style="margin: 15px 0;"></p>
             <div style="background: #FFF8E7; padding: 12px; border-radius: 5px; border: 1px dashed var(--accent); margin-bottom: 12px;">
-                <p><strong>भुगतान विकल्प:</strong></p>
-                <p style="margin-top: 4px;">📍 <strong>Google Pay / Paytm UPI:</strong> (अपनी UPI ID यहाँ लिखें)</p>
-                <p style="margin-top: 4px;">📱 <strong>WhatsApp:</strong> (अपना व्हाट्सएप नंबर यहाँ लिखें)</p>
+                <p><strong>भुगतान करने की जानकारी:</strong></p>
+                <p style="margin-top: 6px;">📍 <strong>Google Pay / PhonePe / Paytm UPI:</strong></p>
+                <p style="font-weight: bold; color: var(--primary); font-size: 1.1rem; margin-bottom: 8px;" id="displayUpiId">yourname@upi</p>
+                <p style="font-size: 0.85rem; color: #555;">ऊपर दिए गए UPI ID पर भुगतान करके व्हाट्सएप पर स्क्रीनशॉट भेजें।</p>
             </div>
-            <button class="btn-primary" style="width: 100%;" onclick="closeModal('paymentModal')">ठीक है (Close)</button>
+            <a id="whatsappBtn" href="#" target="_blank" class="btn-whatsapp" style="width: 100%; text-align: center;">📲 व्हाट्सएप पर स्क्रीनशॉट भेजें</a>
+            <button class="btn-primary" style="width: 100%; margin-top: 8px; background-color: #777;" onclick="closeModal('paymentModal')">बंद करें</button>
         </div>
     </div>
 
@@ -324,6 +340,11 @@
     </footer>
 
     <script>
+        // ==========================================
+        // ✏️ यहाँ अपनी असली UPI ID और WhatsApp नंबर डालें:
+        // ==========================================
+        const MY_UPI_ID = "9999999999@paytm"; // यहाँ अपनी सही UPI ID लिखें (जैसे: yourname@upi)
+        const MY_WHATSAPP_NUMBER = "919999999999"; // यहाँ कंट्री कोड के साथ मोबाइल नंबर डालें (जैसे: 9198290XXXXX)
         const ADMIN_PASS = "1234";
 
         let posts = JSON.parse(localStorage.getItem('sd_posts')) || [
@@ -338,10 +359,10 @@
             },
             {
                 id: 2,
-                title: "श्री करणी माता जी री चिरजा",
-                category: "चिरजा",
+                title: "श्री करणी माता जी री चिरजां",
+                category: "चिरजां",
                 author: "रंजू कंवर चारण",
-                content: "जय करणी जय आवड़ माता, मरुधरा री रक्षक दाता।\n\n[यह विशेष चिरजा है। पूरी पढ़ने के लिए ₹10 का भुगतान करें।]",
+                content: "जय करणी जय आवड़ माता, मरुधरा री रक्षक दाता।\n\n[यह विशेष चिरजां है। पूरी पढ़ने के लिए ₹10 का भुगतान करें।]",
                 isPaid: true,
                 price: 10
             }
@@ -521,6 +542,11 @@
 
         function openPaymentModal(price, title) {
             document.getElementById('payModalText').innerText = `"${title}" को अनलॉक करने के लिए ₹${price} का भुगतान करें।`;
+            document.getElementById('displayUpiId').innerText = MY_UPI_ID;
+            
+            const waText = encodeURIComponent(`नमस्ते! मैंने आपकी साहित्य ढाणी वेबसाइट पर "${title}" (₹${price}) का भुगतान कर दिया है। कृपया मुझे इसकी पूरी सामग्री अनलॉक करने की अनुमति दें।`);
+            document.getElementById('whatsappBtn').href = `https://wa.me/${MY_WHATSAPP_NUMBER}?text=${waText}`;
+
             openModal('paymentModal');
         }
 
