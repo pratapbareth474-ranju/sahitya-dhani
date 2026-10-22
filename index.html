@@ -16,12 +16,7 @@
             --border-color: #E2D3C1;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Martel', serif;
             background-color: var(--bg-color);
@@ -29,31 +24,29 @@
             line-height: 1.8;
             background-image: radial-gradient(#d4af3733 1px, transparent 1px);
             background-size: 20px 20px;
-            padding-bottom: 60px;
+            padding-bottom: 70px;
         }
 
         header {
             background-color: var(--primary);
             color: #FFF;
             text-align: center;
-            padding: 2.5rem 1rem;
+            padding: 2rem 1rem;
             border-bottom: 5px solid var(--secondary);
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
         header h1 {
             font-family: 'Rozha One', serif;
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             color: var(--secondary);
-            margin-bottom: 0.3rem;
-            letter-spacing: 1px;
+            margin-bottom: 0.2rem;
         }
 
         header .author-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #F7E7CE;
             font-weight: bold;
-            margin-top: 5px;
         }
 
         nav {
@@ -61,7 +54,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.8rem 1.5rem;
+            padding: 0.8rem 1.2rem;
             flex-wrap: wrap;
             gap: 10px;
             position: sticky;
@@ -69,44 +62,62 @@
             z-index: 100;
         }
 
-        nav .nav-links {
-            display: flex;
-            gap: 15px;
-        }
+        nav .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
 
-        nav a, nav button {
+        nav button {
             color: #FFF;
-            text-decoration: none;
             background: none;
             border: none;
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 4px;
             transition: 0.3s;
         }
 
-        nav a:hover, nav button:hover {
+        nav button:hover {
             background-color: var(--secondary);
             color: var(--primary);
         }
 
-        .container {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
+        .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
 
         .btn-primary {
             background-color: var(--accent);
             color: white;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
             font-family: inherit;
+        }
+
+        .admin-btn-group {
+            float: right;
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-edit {
+            background-color: #F0AD4E;
+            color: white;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .btn-danger {
+            background-color: #D9534F;
+            color: white;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
         }
 
         .card {
@@ -119,11 +130,7 @@
             position: relative;
         }
 
-        .card h2 {
-            font-family: 'Yatra One', cursive;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
+        .card h2 { font-family: 'Yatra One', cursive; color: var(--primary); margin-bottom: 0.5rem; }
 
         .badge {
             display: inline-block;
@@ -133,12 +140,12 @@
             font-size: 0.8rem;
             border-radius: 4px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .content-preview {
             position: relative;
-            max-height: 100px;
+            max-height: 90px;
             overflow: hidden;
             white-space: pre-line;
         }
@@ -147,22 +154,19 @@
             content: "";
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            height: 50px;
+            height: 40px;
             background: linear-gradient(transparent, var(--card-bg));
         }
 
-        .full-content {
-            white-space: pre-line;
-            margin-top: 10px;
-        }
+        .full-content { white-space: pre-line; margin-top: 10px; }
 
         .paywall-box {
             background: #FFF8E7;
             border: 1px dashed var(--accent);
-            padding: 15px;
+            padding: 12px;
             text-align: center;
             border-radius: 6px;
-            margin-top: 15px;
+            margin-top: 12px;
         }
 
         .modal {
@@ -177,17 +181,17 @@
 
         .modal-content {
             background: var(--card-bg);
-            padding: 2rem;
+            padding: 1.8rem;
             border-radius: 8px;
             width: 90%;
-            max-width: 500px;
+            max-width: 480px;
             position: relative;
         }
 
         .close {
             position: absolute;
             top: 10px; right: 15px;
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
             color: var(--primary);
         }
@@ -195,7 +199,7 @@
         input, textarea, select {
             width: 100%;
             padding: 10px;
-            margin: 8px 0 16px;
+            margin: 8px 0 14px;
             border: 1px solid var(--border-color);
             border-radius: 4px;
             font-family: inherit;
@@ -203,13 +207,23 @@
 
         footer {
             text-align: center;
-            padding: 1.5rem;
+            padding: 1rem;
             background: var(--primary);
             color: white;
             position: fixed;
             bottom: 0;
             width: 100%;
             border-top: 4px solid var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        .admin-controls {
+            display: none;
+            background: #F3E5AB;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -218,7 +232,6 @@
     <header>
         <h1>साहित्य ढाणी</h1>
         <div class="author-subtitle">संचालित: लेखिका रंजू कंवर चारण</div>
-        <p style="font-size: 0.95rem; margin-top: 5px; color: #F7E7CE;">उत्कृष्ट साहित्य एवं मौलिक कृतियों का डिजिटल संग्रह</p>
     </header>
 
     <nav>
@@ -229,59 +242,74 @@
             <button onclick="displayPosts('ई-बुक')">ई-बुक्स</button>
         </div>
         <div>
-            <button onclick="openModal('publishModal')" class="btn-primary">+ नई रचना जोड़ें</button>
-            <button id="loginBtn" onclick="openModal('loginModal')">लेखिका लॉगिन</button>
+            <button id="addPostBtn" onclick="openPublishModal()" class="btn-primary" style="display:none;">+ नई रचना जोड़ें</button>
+            <button id="adminLoginBtn" onclick="openModal('adminModal')">एडमिन लॉगिन</button>
+            <button id="userLoginBtn" onclick="openModal('userModal')">पाठक लॉगिन</button>
         </div>
     </nav>
 
-    <div class="container" id="postsContainer">
-        <!-- रचनाएं यहाँ प्रदर्शित होंगी -->
+    <div class="container">
+        <div id="adminNotice" class="admin-controls">
+            🔐 <strong>एडमिन मोड चालू है:</strong> आप नई रचनाएँ जोड़ सकते हैं, एडिट कर सकते हैं और हटा सकते हैं।
+        </div>
+        <div id="postsContainer"></div>
     </div>
 
-    <!-- नई रचना पब्लिश करने का फॉर्म -->
+    <!-- नई/एडिट रचना पब्लिश फॉर्म -->
     <div id="publishModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('publishModal')">&times;</span>
-            <h2>नई रचना पब्लिश करें</h2>
+            <h2 id="modalHeading">नई रचना पब्लिश करें</h2>
+            <input type="hidden" id="editPostId">
             <input type="text" id="postTitle" placeholder="शीर्षक (Title)">
             <select id="postCategory">
                 <option value="कविता">कविता</option>
                 <option value="कहानी">कहानी</option>
                 <option value="ई-बुक">ई-बुक</option>
             </select>
-            <textarea id="postContent" rows="6" placeholder="अपनी रचना या सामग्री यहाँ लिखें..."></textarea>
+            <textarea id="postContent" rows="6" placeholder="सामग्री यहाँ लिखें..."></textarea>
             <label><input type="checkbox" id="isPaid"> क्या यह पेड (Paid) सामग्री है?</label>
             <input type="number" id="postPrice" placeholder="कीमत ₹ में (जैसे: 10, 15, 20, 50)" style="display:none;">
             <div style="display:flex; gap:10px; margin-top:10px;">
-                <button class="btn-primary" onclick="savePost()">पब्लिश करें</button>
+                <button class="btn-primary" onclick="savePost()">सुरक्षित करें</button>
                 <button onclick="closeModal('publishModal')">रद्द करें</button>
             </div>
         </div>
     </div>
 
-    <!-- लेखिका लॉगिन -->
-    <div id="loginModal" class="modal">
+    <!-- एडमिन लॉगिन मोडल -->
+    <div id="adminModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('loginModal')">&times;</span>
-            <h2>लेखिका पैनल</h2>
-            <input type="text" id="authorName" placeholder="आपका नाम (रंजू कंवर चारण)">
-            <button class="btn-primary" onclick="loginAuthor()">लॉगिन करें</button>
+            <span class="close" onclick="closeModal('adminModal')">&times;</span>
+            <h2>एडमिन लॉगिन (रंजू कंवर चारण)</h2>
+            <p style="font-size:0.85rem; color:#666; margin-bottom:8px;">पासकोड दर्ज करें (डिफ़ॉल्ट पासकोड: <strong>1234</strong>)</p>
+            <input type="password" id="adminPassCode" placeholder="एडमिन पासकोड">
+            <button class="btn-primary" style="width:100%;" onclick="loginAdmin()">लॉगिन करें</button>
         </div>
     </div>
 
-    <!-- पेमेंट एवं अनलॉक विंडो -->
+    <!-- पाठक लॉगिन मोडल -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('userModal')">&times;</span>
+            <h2>पाठक / सदस्य लॉगिन</h2>
+            <input type="text" id="userName" placeholder="आपका नाम">
+            <button class="btn-primary" style="width:100%;" onclick="loginUser()">लॉगिन करें</button>
+        </div>
+    </div>
+
+    <!-- पेमेंट अनलॉक मोडल -->
     <div id="paymentModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('paymentModal')">&times;</span>
             <h2>रचना अनलॉक करें</h2>
             <p id="payModalText" style="margin: 15px 0;"></p>
-            <div style="background: #FFF8E7; padding: 15px; border-radius: 5px; border: 1px dashed var(--accent); margin-bottom: 15px;">
-                <p><strong>भुगतान करने के विकल्प:</strong></p>
-                <p style="margin-top: 5px;">📍 <strong>Google Pay / PhonePe / Paytm UPI:</strong> (अपनी UPI ID यहाँ लिखें)</p>
-                <p style="margin-top: 5px;">📱 <strong>WhatsApp संपर्क:</strong> (अपना नंबर दर्ज करें)</p>
+            <div style="background: #FFF8E7; padding: 12px; border-radius: 5px; border: 1px dashed var(--accent); margin-bottom: 12px;">
+                <p><strong>भुगतान विकल्प:</strong></p>
+                <p style="margin-top: 4px;">📍 <strong>Google Pay / Paytm UPI:</strong> (यहाँ अपनी UPI ID लिखें)</p>
+                <p style="margin-top: 4px;">📱 <strong>WhatsApp:</strong> (अपना नंबर दर्ज करें)</p>
             </div>
-            <p style="font-size: 0.9rem; color: #555;">भुगतान के बाद स्क्रीनशॉट भेजकर पूरी रचना का एक्सेस प्राप्त करें।</p>
-            <button class="btn-primary" style="margin-top: 15px; width: 100%;" onclick="closeModal('paymentModal')">ठीक है (Close)</button>
+            <button class="btn-primary" style="width: 100%;" onclick="closeModal('paymentModal')">ठीक है (Close)</button>
         </div>
     </div>
 
@@ -290,44 +318,79 @@
     </footer>
 
     <script>
-        let posts = JSON.parse(localStorage.getItem('sahitya_posts')) || [
+        const ADMIN_PASS = "1234";
+
+        let posts = JSON.parse(localStorage.getItem('sd_posts')) || [
             {
                 id: 1,
                 title: "केसरिया बालम री हेत",
                 category: "कविता",
                 author: "रंजू कंवर चारण",
-                content: "मरुधरा री पावन माटी, गावे रीत अणेक।\nकेसरिया बालम आवो नी, पधारो म्हारे देस।\nरंग-बिरंगी थारी धोरा री धरती, सुहानी लागे सांज।",
+                content: "मरुधरा री पावन माटी, गावे रीत अणेक।\nकेसरिया बालम आवो नी, पधारो म्हारे देस।",
                 isPaid: false,
                 price: 0
             },
             {
                 id: 2,
-                title: "राजस्थान रो सांस्कृतिक गौरव (विशेष लेख)",
+                title: "राजपूती संस्कृति एवं इतिहास",
                 category: "कहानी",
                 author: "रंजू कंवर चारण",
-                content: "राजस्थान री संस्कृति दुनिया मांही अनोखी और अद्भुत मानी जावे है। अठे रो इतिहास शौर्य और त्याग री गाथावां सूं भर्योड़ो है।\n\n[यह विशेष रचना है। पूरी सामग्री पढ़ने के लिए निर्धारित शुल्क का भुगतान करें।]",
+                content: "राजस्थान री संस्कृति दुनिया मांही अनोखी और अद्भुत मानी जावे है।\n\n[यह विशेष रचना है। इसे पूरा पढ़ने के लिए ₹15 का भुगतान करें।]",
                 isPaid: true,
                 price: 15
             }
         ];
 
+        function checkAuthStatus() {
+            const isAdmin = localStorage.getItem('sd_isAdmin') === 'true';
+            const userName = localStorage.getItem('sd_userName');
+
+            if (isAdmin) {
+                document.getElementById('addPostBtn').style.display = 'inline-block';
+                document.getElementById('adminNotice').style.display = 'block';
+                document.getElementById('adminLoginBtn').innerText = "एडमिन (लॉगआउट)";
+                document.getElementById('adminLoginBtn').onclick = logoutAdmin;
+                document.getElementById('userLoginBtn').style.display = 'none';
+            } else {
+                document.getElementById('addPostBtn').style.display = 'none';
+                document.getElementById('adminNotice').style.display = 'none';
+                document.getElementById('adminLoginBtn').innerText = "एडमिन लॉगिन";
+                document.getElementById('adminLoginBtn').onclick = () => openModal('adminModal');
+
+                if (userName) {
+                    document.getElementById('userLoginBtn').innerText = userName + " (लॉगआउट)";
+                    document.getElementById('userLoginBtn').onclick = logoutUser;
+                } else {
+                    document.getElementById('userLoginBtn').innerText = "पाठक लॉगिन";
+                    document.getElementById('userLoginBtn').onclick = () => openModal('userModal');
+                }
+            }
+        }
+
         function displayPosts(filter = 'all') {
             const container = document.getElementById('postsContainer');
             container.innerHTML = '';
 
+            const isAdmin = localStorage.getItem('sd_isAdmin') === 'true';
             const filtered = filter === 'all' ? posts : posts.filter(p => p.category === filter);
 
             filtered.forEach(post => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 
+                let adminControls = isAdmin ? `
+                    <div class="admin-btn-group">
+                        <button class="btn-edit" onclick="editPost(${post.id})">✏️ एडिट</button>
+                        <button class="btn-danger" onclick="deletePost(${post.id})">❌ हटाएं</button>
+                    </div>` : '';
+
                 let contentHTML = '';
-                if(post.isPaid) {
+                if(post.isPaid && !isAdmin) {
                     contentHTML = `
                         <div class="content-preview">${post.content}</div>
                         <div class="paywall-box">
                             <p>🔒 इस रचना को पूरा पढ़ने का शुल्क: <strong>₹${post.price}</strong></p>
-                            <button class="btn-primary" style="margin-top:8px;" onclick="openPaymentModal(${post.price}, '${post.title}')">अभी अनलॉक करें (Pay ₹${post.price})</button>
+                            <button class="btn-primary" style="margin-top:6px;" onclick="openPaymentModal(${post.price}, '${post.title}')">अनलॉक करें (Pay ₹${post.price})</button>
                         </div>
                     `;
                 } else {
@@ -335,6 +398,7 @@
                 }
 
                 card.innerHTML = `
+                    ${adminControls}
                     <span class="badge">${post.category}</span>
                     <h2>${post.title}</h2>
                     <small style="color:#666;">लेखिका: ${post.author}</small>
@@ -351,45 +415,22 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        function openPaymentModal(price, title) {
-            document.getElementById('payModalText').innerText = `"${title}" को पढ़ने के लिए ₹${price} का भुगतान करें।`;
-            openModal('paymentModal');
+        function openPublishModal() {
+            document.getElementById('modalHeading').innerText = "नई रचना पब्लिश करें";
+            document.getElementById('editPostId').value = '';
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+            document.getElementById('isPaid').checked = false;
+            document.getElementById('postPrice').value = '';
+            document.getElementById('postPrice').style.display = 'none';
+            openModal('publishModal');
         }
 
-        function loginAuthor() {
-            const name = document.getElementById('authorName').value;
-            if(name) {
-                localStorage.setItem('sahitya_author', name);
-                document.getElementById('loginBtn').innerText = name;
-                closeModal('loginModal');
-            }
-        }
-
-        function savePost() {
-            const title = document.getElementById('postTitle').value;
-            const category = document.getElementById('postCategory').value;
-            const content = document.getElementById('postContent').value;
-            const isPaid = document.getElementById('isPaid').checked;
-            const price = document.getElementById('postPrice').value || 0;
-            const author = localStorage.getItem('sahitya_author') || 'रंजू कंवर चारण';
-
-            if(!title || !content) {
-                alert('कृपया शीर्षक और सामग्री दोनों भरें!');
-                return;
-            }
-
-            const newPost = { id: Date.now(), title, category, content, isPaid, price, author };
-            posts.unshift(newPost);
-            localStorage.setItem('sahitya_posts', JSON.stringify(posts));
-            displayPosts();
-            closeModal('publishModal');
-        }
-
-        window.onload = function() {
-            const savedAuthor = localStorage.getItem('sahitya_author');
-            if(savedAuthor) document.getElementById('loginBtn').innerText = savedAuthor;
-            displayPosts();
-        }
-    </script>
-</body>
-</html>
+        function editPost(id) {
+            const post = posts.find(p => p.id === id);
+            if (post) {
+                document.getElementById('modalHeading').innerText = "रचना एडिट करें (सुधार करें)";
+                document.getElementById('editPostId').value = post.id;
+                document.getElementById('postTitle').value = post.title;
+                document.getElementById('postCategory').value = post.category;
+                document.getElementById('postContent
