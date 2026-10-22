@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="hi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>साहित्य ढाणी - राजस्थानी व हिंदी साहित्य, बातां एवं ई-बुक्स</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Martel:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            maroon: '#6b1110',
+                            saffron: '#d9531e',
+                            gold: '#d4af37',
+                            sand: '#f8f1e5',
+                            cream: '#fdfbf7',
+                            dark: '#1c100d'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Martel', 'Georgia', 'serif'],
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Poppins', 'Martel', sans-serif;
+            background-color: #f8f1e5;
+            color: #2d2625;
+        }
+        .font-literary {
+            font-family: 'Martel', serif;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8f1e5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6b1110;
+            border-radius: 4px;
+        }
+        .text-blur {
+            filter: blur(5px);
+            user-select: none;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-brand-sand text-gray-800 flex flex-col min-h-screen">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-40 bg-brand-maroon text-white shadow-xl border-b-2 border-brand-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-brand-gold to-amber-200 flex items-center justify-center text-brand-maroon text-2xl font-bold shadow-md border-2 border-amber-100">
+                        <i class="fa-solid fa-feather-pointed"></i>
+                    </div>
+                    <div>
+                        <span class="font-literary text-2xl font-extrabold tracking-wide text-brand-gold block leading-none">साहित्य ढाणी</span>
+                        <span class="text-[11px] text-amber-200 tracking-wider">राजस्थानी व हिंदी साहित्य रो ई-ठिकाणो</span>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                    <div class="relative w-full">
+                        <input type="text" id="searchInput" oninput="handleSearch()" placeholder="कविता, कहानी या लेखक खोजें..." class="w-full bg-white/10 text-white placeholder-amber-200/60 pl-10 pr-4 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold border border-amber-900/40">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-amber-200/70 text-sm"></i>
+                    </div>
+                </div>
+
+                <!-- Nav Links -->
+                <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium">
+                    <button onclick="switchTab('home')" class="hover:text-brand-gold transition text-white"><i class="fa-solid fa-house text-brand-gold"></i> होम</button>
+                    <button onclick="filterCategory('कहानी')" class="hover:text-brand-gold transition text-amber-100">कहाँनियाँ</button>
+                    <button onclick="filterCategory('कविता')" class="hover:text-brand-gold transition text-amber-100">कविताएँ</button>
+                    <button onclick="filterCategory('ई-बुक')" class="hover:text-brand-gold transition text-amber-100">ई-बुक्स</button>
+                </nav>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="openPublishModal()" class="bg-gradient-to-r from-brand-gold to-amber-400 text-brand-maroon font-bold px-4 py-2.5 rounded-xl shadow-lg hover:shadow-xl transition text-sm flex items-center gap-2 border border-amber-200">
+                        <i class="fa-solid fa-plus-circle"></i>
+                        <span>+ नई रचना जोड़ें</span>
+                    </button>
+                    
+                    <button id="authBtn" onclick="openAuthModal()" class="bg-white/10 hover:bg-white/20 text-white font-medium px-4 py-2.5 rounded-xl text-sm border border-amber-200/30">
+                        <i class="fa-solid fa-user-circle"></i>
+                        <span id="authBtnText">लॉगिन</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow">
+        
+        <!-- HERO BANNER -->
+        <section class="relative bg-gradient-to-b from-brand-maroon via-amber-950 to-brand-dark text-white py-12 px-4 text-center border-b-4 border-brand-gold">
+            <div class="max-w-4xl mx-auto relative z-10">
+                <span class="inline-block bg-brand-gold/20 text-brand-gold border border-brand-gold/50 px-4 py-1 rounded-full text-xs font-semibold mb-3">
+                    🚩 आपाणी भाषा, आपाणी संस्कृति
+                </span>
+                <h1 class="font-literary text-3xl sm:text-5xl font-extrabold text-amber-100 mb-4 leading-tight">
+                    अपनी कविता, कहानी व ई-बुक्स खुद पब्लिश करें <br><span class="text-brand-gold">अपनी पसंद की कीमत पर बेचें!</span>
+                </h1>
+                <p class="text-sm sm:text-base text-amber-100/80 mb-6 max-w-2xl mx-auto">
+                    साहित्य ढाणी पर अपनी रचना लिखें। पाठक 40% मुफ़्त पढ़ेंगे और पूरी रचना अनलॉक करने के लिए आपकी तय की गई कीमत देंगे।
+                </p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="openPublishModal()" class="bg-brand-saffron hover:bg-amber-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg text-sm flex items-center gap-2 border border-amber-300">
+                        <i class="fa-solid fa-pen-nib"></i> अभी कविता/कहानी लिखें
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORY & LISTING SECTION -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-8 bg-white p-4 rounded-2xl shadow-sm border border-brand-gold/30">
+                <div class="flex flex-wrap gap-2" id="categoryTabs">
+                    <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-brand-maroon text-white">
+                        सभी रचनाएँ
+                    </button>
+                    <button onclick="filterCategory('कहानी')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-gray-100 text-gray-700 hover:bg-amber-100">
+                        📖 कहाँनियाँ
+                    </button>
+                    <button onclick="filterCategory('कविता')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-gray-100 text-gray-700 hover:bg-amber-100">
+                        ✍️ कविताएँ
+                    </button>
+                    <button onclick="filterCategory('ई-बुक')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-gray-100 text-gray-700 hover:bg-amber-100">
+                        📚 ई-बुक्स
+                    </button>
+                </div>
+            </div>
+
+            <!-- Book Cards Grid -->
+            <div id="booksGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dynamically Rendered -->
+            </div>
+        </section>
+    </main>
+
+    <!-- PUBLISH NEW POEM / STORY MODAL -->
+    <div id="publishModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white my-8 max-w-2xl w-full rounded-2xl shadow-2xl overflow-hidden border-2 border-brand-gold">
+            <div class="bg-brand-maroon text-white p-4 flex justify-between items-center border-b border-brand-gold/40">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-pen-nib text-brand-gold"></i>
+                    <h3 class="font-literary font-bold text-lg text-amber-100">नयी कविता या कहानी पब्लिश करें</h3>
+                </div>
+                <button onclick="closePublishModal()" class="text-amber-200 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form onsubmit="handlePublish(event)" class="p-6 space-y-4 text-xs font-sans">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">शीर्षक (Title) *</label>
+                    <input type="text" id="pubTitle" required placeholder="जैसे: मरुधरा री माटी या वीर महाराणा" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-maroon text-sm">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">श्रेणी (Category) *</label>
+                        <select id="pubCategory" required class="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-maroon text-sm">
+                            <option value="कविता">कविता (Poem)</option>
+                            <option value="कहानी">कहानी (Story)</option>
+                            <option value="ई-बुक">ई-बुक (E-Book)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">कीमत (Price in ₹) *</label>
+                        <input type="number" id="pubPrice" required min="0" placeholder="0 = मुफ़्त, या 29, 49" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-maroon text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">लेखक का नाम (Author Name) *</label>
+                    <input type="text" id="pubAuthor" required placeholder="आपका नाम या कलम का नाम" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-maroon text-sm">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">कवर फोटो लिंक (Cover Image URL)</label>
+                    <input type="url" id="pubCover" placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-maroon text-sm">
+                    <span class="text-[10px] text-gray-400">खाली छोड़ने पर सुंदर डिफ़ॉल्ट फोटो ली जाएगी।</span>
+                </div>
+
+                <!-- FREE PREVIEW AREA -->
+                <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200">
+                    <label class="block font-bold text-brand-maroon mb-1">
+                        <i class="fa-solid fa-unlock text-green-600"></i> मुफ़्त प्रिव्यू पाठ (Free Preview - 40%) *
+                    </label>
+                    <p class="text-[10px] text-gray-500 mb-1">यह शुरुआती पंक्तियां/हिस्सा सभी पाठकों को बिना पैसे दिए मुफ़्त दिखेगा।</p>
+                    <textarea id="pubFreeContent" rows="3" required placeholder="यहाँ अपनी कविता या कहानी की शुरुआती 4-5 लाइनें लिखें..." class="w-full px-3 py-2 rounded-xl border border-amber-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-maroon bg-white"></textarea>
+                </div>
+
+                <!-- PAID LOCKED AREA -->
+                <div class="bg-red-50 p-3.5 rounded-xl border border-red-200">
+                    <label class="block font-bold text-red-900 mb-1">
+                        <i class="fa-solid fa-lock text-red-600"></i> मुख्य पाठ (Locked Content - 60%) *
+                    </label>
+                    <p class="text-[10px] text-gray-500 mb-1">यह हिस्सा धुंधला (Blur) रहेगा। केवल पेमेंट करने वाले पाठक ही इसे देख सकेंगे।</p>
+                    <textarea id="pubPaidContent" rows="4" required placeholder="यहाँ अपनी कविता या कहानी का मुख्य/शेष भाग लिखें..." class="w-full px-3 py-2 rounded-xl border border-red-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-maroon bg-white"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-maroon hover:bg-amber-950 text-white font-bold py-3 rounded-xl shadow-md text-sm transition flex items-center justify-center gap-2 border border-brand-gold">
+                    <i class="fa-solid fa-paper-plane"></i> साहित्य ढाणी पर तुरंत पब्लिश करें
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- READER MODAL -->
+    <div id="readerModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-2 sm:p-4 backdrop-blur-sm">
+        <div class="bg-brand-cream w-full max-w-2xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col border-2 border-brand-gold">
+            
+            <div class="bg-brand-maroon text-white p-4 flex items-center justify-between border-b border-brand-gold/40">
+                <div>
+                    <span id="modalCategoryBadge" class="bg-brand-gold text-brand-maroon text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">कविता</span>
+                    <h3 id="modalBookTitle" class="font-literary text-lg font-bold text-amber-100 truncate">शीर्षक</h3>
+                </div>
+                <button onclick="closeReaderModal()" class="text-amber-200 hover:text-white text-xl p-1"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="p-6 overflow-y-auto flex-1 font-literary text-gray-800 text-base leading-relaxed space-y-4">
+                <div class="text-xs font-sans text-gray-600 pb-2 border-b border-gray-200 flex justify-between">
+                    <span>लेखक: <strong id="modalAuthorName" class="text-brand-maroon">नाम</strong></span>
+                    <span><i class="fa-solid fa-eye text-amber-600"></i> <span id="modalViews">120</span> पाठक</span>
+                </div>
+
+                <!-- Free Part -->
+                <div id="freeTextSection" class="text-gray-900 leading-relaxed"></div>
+
+                <!-- Paywall Locked Part -->
+                <div id="paywallContainer" class="relative mt-6 pt-4 border-t border-dashed border-amber-900/30">
+                    <div id="lockedTextSection" class="text-blur text-gray-400 select-none space-y-2"></div>
+
+                    <div id="paywallOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-t from-brand-cream via-brand-cream/95 to-transparent p-4 text-center">
+                        <div class="bg-white p-5 rounded-2xl shadow-xl border-2 border-brand-gold max-w-sm w-full">
+                            <div class="w-10 h-10 bg-amber-100 text-brand-saffron rounded-full flex items-center justify-center mx-auto text-lg mb-2">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <h4 class="font-literary text-base font-bold text-brand-maroon">आगे पूरी रचना पढ़ने के लिए अनलॉक करें</h4>
+                            <div class="my-2 text-xl font-bold text-brand-maroon font-literary" id="paywallPrice">₹29</div>
+
+                            <button onclick="triggerPayment()" class="w-full bg-brand-saffron hover:bg-amber-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md text-xs transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-bolt"></i> अभी अनलॉक करें (Demo Pay)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION MODAL -->
+    <div id="authModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white max-w-md w-full rounded-2xl shadow-2xl p-6 border border-brand-gold">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-literary font-bold text-xl text-brand-maroon">लेखक लॉगिन / साइन-अप</h3>
+                <button onclick="closeAuthModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleAuth(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">आपका नाम</label>
+                    <input type="text" id="authName" required placeholder="जैसे: कवि कल्लाजी" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">ईमेल ID</label>
+                    <input type="email" id="authEmail" required placeholder="name@example.com" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <button type="submit" class="w-full bg-brand-maroon text-white font-bold py-2.5 rounded-xl shadow text-sm">
+                    लॉगिन / साइन-अप करें
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-dark text-amber-100/70 py-6 text-center text-xs border-t-2 border-brand-gold mt-auto">
+        <p>© 2026 साहित्य ढाणी (Sahitya Dhani) - सर्वाधिकार सुरक्षित।</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Default Sample Content
+        const defaultBooks = [
+            {
+                id: 1,
+                title: "केसरिया बालम अर मरुधरा री महक",
+                author: "कमला देवी जोधा",
+                category: "कविता",
+                price: 29,
+                views: "1.5k",
+                rating: 4.9,
+                cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
+                unlocked: false,
+                freeContent: "केसरिया बालम आवो नी,\nपधारो म्हारे देस।\nरेत रे धोरा री सूणी माटी,\nधरे सुहाणो भेस।",
+                paidContent: "घूमर री ताल माथे नाचे,\nसगळो मारवाड़ आज,\nसिर माथे बंध्यो सोहणो,\nपचरंगी साफ़ो अर ताज।\n\nआवो नी साजन बेगा आवो,\nथांरी बात जोवे ढाणी!"
+            },
+            {
+                id: 2,
+                title: "जैसलमेर रो गढ़ अर गुप्त खज़ानो",
+                author: "कुँवर रणजीत सिंह",
+                category: "कहानी",
+                price: 49,
+                views: "3.1k",
+                rating: 4.8,
+                cover: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=600&q=80",
+                unlocked: false,
+                freeContent: "थार रे मरुस्थल में जैसलमेर रे सोनार किला री राताँ री बाताँ ही अलग होवे। जब हवेली रे झरोखे से ठंडी हवा चाले, तो मानों इतिहास खुद बातां करे...",
+                paidContent: "जयदेव ने जैसे ही पहेली रो छेलो आखर पढ़्यो, हवेली री भुतिया दीवार से एक पुरानो नक्शो नीचे गिर्यो। नक्शे में किले के नीचे गुप्त तहखाने का रास्ता बना था..."
+            }
+        ];
+
+        let booksData = [];
+        let currentUser = null;
+        let activeBook = null;
+        let currentFilter = 'all';
+
+        // Initialize App & Load from Browser Memory
+        window.onload = function() {
+            const saved = localStorage.getItem('sahitya_books');
+            if (saved) {
+                booksData = JSON.parse(saved);
+            } else {
+                booksData = defaultBooks;
+                localStorage.setItem('sahitya_books', JSON.stringify(booksData));
+            }
+
+            const savedUser = localStorage.getItem('sahitya_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                document.getElementById('authBtnText').innerText = currentUser.name;
+            }
+
+            renderBooks();
+        };
+
+        // Render Books Grid
+        function renderBooks() {
+            const grid = document.getElementById('booksGrid');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+
+            let filtered = booksData.filter(b => {
+                const matchesCat = currentFilter === 'all' || b.category === currentFilter;
+                const matchesSearch = b.title.toLowerCase().includes(searchVal) || b.author.toLowerCase().includes(searchVal);
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-500">कोई रचना नहीं मिली। आप ऊपर से नई रचना जोड़ सकते हैं!</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(book => `
+                <div class="bg-white rounded-2xl shadow-sm border border-brand-gold/30 overflow-hidden hover:shadow-lg transition flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-44 overflow-hidden bg-gray-100">
+                            <img src="${book.cover}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80'">
+                            <span class="absolute top-3 left-3 bg-brand-maroon/90 text-amber-200 text-[10px] font-bold px-2 py-1 rounded-full uppercase">
+                                ${book.category}
+                            </span>
+                            <span class="absolute top-3 right-3 ${book.price == 0 ? 'bg-green-600' : 'bg-brand-saffron'} text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                                ${book.price == 0 ? 'मुफ़्त' : '₹' + book.price}
+                            </span>
+                        </div>
+
+                        <div class="p-4">
+                            <div class="text-xs text-brand-maroon font-semibold mb-1"><i class="fa-solid fa-pen-nib"></i> ${book.author}</div>
+                            <h3 class="font-literary text-base font-bold text-gray-900 mb-2 line-clamp-1">${book.title}</h3>
+                            <p class="text-xs text-gray-600 line-clamp-2">${book.freeContent}</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 pt-0 border-t border-gray-100 flex items-center justify-between mt-auto">
+                        <span class="text-xs text-gray-400"><i class="fa-solid fa-eye"></i> ${book.views}</span>
+                        <button onclick="openReader(${book.id})" class="bg-amber-100 hover:bg-brand-maroon hover:text-white text-brand-maroon font-bold px-3.5 py-1.5 rounded-lg text-xs transition">
+                            ${book.unlocked || book.price == 0 ? 'पढ़ें' : 'प्रिव्यू पढ़ें'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Open Book Reader
+        function openReader(id) {
+            activeBook = booksData.find(b => b.id === id);
+            if (!activeBook) return;
+
+            document.getElementById('modalBookTitle').innerText = activeBook.title;
+            document.getElementById('modalAuthorName').innerText = activeBook.author;
+            document.getElementById('modalCategoryBadge').innerText = activeBook.category;
+            document.getElementById('modalViews').innerText = activeBook.views;
+            document.getElementById('paywallPrice').innerText = '₹' + activeBook.price;
+
+            document.getElementById('freeTextSection').innerHTML = activeBook.freeContent.replace(/\n/g, '<br>');
+
+            const overlay = document.getElementById('paywallOverlay');
+            const lockedSec = document.getElementById('lockedTextSection');
+
+            if (activeBook.unlocked || activeBook.price == 0) {
+                overlay.classList.add('hidden');
+                lockedSec.classList.remove('text-blur', 'text-gray-400', 'select-none');
+                lockedSec.classList.add('text-gray-900');
+                lockedSec.innerHTML = activeBook.paidContent.replace(/\n/g, '<br>');
+            } else {
+                overlay.classList.remove('hidden');
+                lockedSec.classList.add('text-blur', 'text-gray-400', 'select-none');
+                lockedSec.innerHTML = activeBook.paidContent.replace(/\n/g, '<br>');
+            }
+
+            document.getElementById('readerModal').classList.remove('hidden');
+        }
+
+        function closeReaderModal() {
+            document.getElementById('readerModal').classList.add('hidden');
+        }
+
+        // Trigger Unlock Payment
+        function triggerPayment() {
+            activeBook.unlocked = true;
+            localStorage.setItem('sahitya_books', JSON.stringify(booksData));
+            alert('भुगतान सफल! पूरी रचना अनलॉक हो गई है।');
+            openReader(activeBook.id);
+            renderBooks();
+        }
+
+        // Handle Publishing New Poem/Story
+        function handlePublish(e) {
+            e.preventDefault();
+
+            const newBook = {
+                id: Date.now(),
+                title: document.getElementById('pubTitle').value,
+                category: document.getElementById('pubCategory').value,
+                price: parseInt(document.getElementById('pubPrice').value) || 0,
+                author: document.getElementById('pubAuthor').value,
+                cover: document.getElementById('pubCover').value || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80',
+                freeContent: document.getElementById('pubFreeContent').value,
+                paidContent: document.getElementById('pubPaidContent').value,
+                views: "1",
+                rating: 5.0,
+                unlocked: true
+            };
+
+            booksData.unshift(newBook);
+            localStorage.setItem('sahitya_books', JSON.stringify(booksData));
+
+            closePublishModal();
+            renderBooks();
+            alert('आपकी रचना "साहित्य ढाणी" पर सफलतापूर्वक पब्लिश हो गई है!');
+        }
+
+        // Filters & Modals
+        function filterCategory(cat) {
+            currentFilter = cat;
+            renderBooks();
+        }
+
+        function handleSearch() {
+            renderBooks();
+        }
+
+        function openPublishModal() {
+            document.getElementById('publishModal').classList.remove('hidden');
+        }
+        function closePublishModal() {
+            document.getElementById('publishModal').classList.add('hidden');
+        }
+
+        function openAuthModal() {
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const name = document.getElementById('authName').value;
+            currentUser = { name: name };
+            localStorage.setItem('sahitya_user', JSON.stringify(currentUser));
+            document.getElementById('authBtnText').innerText = name;
+            closeAuthModal();
+            alert('लॉगिन सफल रहा!');
+        }
+    </script>
+</body>
+</html>
