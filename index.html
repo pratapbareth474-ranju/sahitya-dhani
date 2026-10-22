@@ -433,4 +433,97 @@
                 document.getElementById('editPostId').value = post.id;
                 document.getElementById('postTitle').value = post.title;
                 document.getElementById('postCategory').value = post.category;
-                document.getElementById('postContent
+                document.getElementById('postContent').value = post.content;
+                document.getElementById('isPaid').checked = post.isPaid;
+                document.getElementById('postPrice').value = post.price;
+                document.getElementById('postPrice').style.display = post.isPaid ? 'block' : 'none';
+                openModal('publishModal');
+            }
+        }
+
+        function loginAdmin() {
+            const pass = document.getElementById('adminPassCode').value;
+            if (pass === ADMIN_PASS) {
+                localStorage.setItem('sd_isAdmin', 'true');
+                closeModal('adminModal');
+                checkAuthStatus();
+                displayPosts();
+            } else {
+                alert('गलत पासकोड! कृपया सही पासकोड दर्ज करें।');
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('sd_isAdmin');
+            checkAuthStatus();
+            displayPosts();
+        }
+
+        function loginUser() {
+            const name = document.getElementById('userName').value;
+            if (name) {
+                localStorage.setItem('sd_userName', name);
+                closeModal('userModal');
+                checkAuthStatus();
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('sd_userName');
+            checkAuthStatus();
+        }
+
+        function savePost() {
+            const editId = document.getElementById('editPostId').value;
+            const title = document.getElementById('postTitle').value;
+            const category = document.getElementById('postCategory').value;
+            const content = document.getElementById('postContent').value;
+            const isPaid = document.getElementById('isPaid').checked;
+            const price = document.getElementById('postPrice').value || 0;
+
+            if(!title || !content) {
+                alert('कृपया शीर्षक और सामग्री भरें!');
+                return;
+            }
+
+            if (editId) {
+                // मौजूदा पोस्ट को अपडेट (एडिट) करना
+                let post = posts.find(p => p.id == editId);
+                if (post) {
+                    post.title = title;
+                    post.category = category;
+                    post.content = content;
+                    post.isPaid = isPaid;
+                    post.price = price;
+                }
+            } else {
+                // नई पोस्ट जोड़ना
+                const newPost = { id: Date.now(), title, category, content, isPaid, price, author: 'रंजू कंवर चारण' };
+                posts.unshift(newPost);
+            }
+
+            localStorage.setItem('sd_posts', JSON.stringify(posts));
+            displayPosts();
+            closeModal('publishModal');
+        }
+
+        function deletePost(id) {
+            if (confirm('क्या आप सचमुच इस रचना को हटाना चाहते हैं?')) {
+                posts = posts.filter(p => p.id !== id);
+                localStorage.setItem('sd_posts', JSON.stringify(posts));
+                displayPosts();
+            }
+        }
+
+        function openPaymentModal(price, title) {
+            document.getElementById('payModalText').innerText = `"${title}" को अनलॉक करने के लिए ₹${price} का भुगतान करें।`;
+            openModal('paymentModal');
+        }
+
+        window.onload = function() {
+            checkAuthStatus();
+            displayPosts();
+        }
+    </script>
+</body>
+</html>
