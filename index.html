@@ -489,7 +489,7 @@
                 let adminControls = isAdmin ? `
                     <div class="admin-btn-group">
                         <button class="btn-edit" onclick="editPost(${post.id})">✏️ एडिट</button>
-                        <button class="btn-danger" onclick="deletePost(${post.id})">❌ हटाएं</button>
+                        <button class="btn-danger" onclick="deletePost(${post.id})">❌ बताएं/हटाएं</button>
                     </div>` : '';
 
                 let pdfLinkHTML = post.pdfUrl ? `<br><a href="${post.pdfUrl}" target="_blank" class="btn-pdf">📄 PDF / ई-बुक डाउनलोड करें</a>` : '';
@@ -555,7 +555,6 @@
 
         function loginAdmin() {
             const pass = document.getElementById('adminPassCode').value;
-            // डिफ़ॉल्ट पासवर्ड '1234' रहेगा, यदि नया सेट किया है तो वो काम करेगा
             const savedPass = localStorage.getItem('sd_adminPass') || '1234';
 
             if (pass === savedPass) {
@@ -580,7 +579,7 @@
                 return;
             }
             if (!newPassInput || newPassInput.length < 4) {
-                alert('नيا पासवर्ड कम से कम 4 अंकों/अक्षरों का होना चाहिए!');
+                alert('नया पासवर्ड कम से कम 4 अंकों/अक्षरों का होना चाहिए!');
                 return;
             }
             if (newPassInput !== confirmPassInput) {
@@ -621,7 +620,7 @@
             const title = document.getElementById('postTitle').value;
             const category = document.getElementById('postCategory').value;
             const content = document.getElementById('postContent').value;
-            const pdfUrl = document.getElementById('postPdfUrl.value') || document.getElementById('postPdfUrl').value;
+            const pdfUrl = document.getElementById('postPdfUrl').value;
             const isPaid = document.getElementById('isPaid').checked;
             const price = document.getElementById('postPrice').value || 0;
 
