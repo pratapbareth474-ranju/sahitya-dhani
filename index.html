@@ -81,7 +81,6 @@
             color: var(--primary);
         }
 
-        /* 2-कॉलम लेआउट: रचनाएँ बाईं तरफ, विज्ञापन दाईं तरफ */
         .layout-grid {
             max-width: 1100px;
             margin: 2rem auto;
@@ -223,7 +222,6 @@
             margin-top: 12px;
         }
 
-        /* साइडबार विज्ञापन (Sidebar Ads) स्टाइल */
         .sidebar-ad-card {
             background: var(--card-bg);
             border: 1px dashed var(--secondary);
@@ -331,7 +329,6 @@
     </nav>
 
     <div class="layout-grid">
-        <!-- मुख्य क्षेत्र: जहाँ रचनाएँ दिखेंगी (बिना किसी विज्ञापन रुकावट के) -->
         <main>
             <div id="adminNotice" class="admin-controls">
                 🔐 <strong>एडमिन मोड चालू है:</strong> आप नई रचनाएँ/ई-बुक जोड़ सकते हैं, एडिट कर सकते हैं और हटा सकते हैं।
@@ -339,11 +336,10 @@
             <div id="postsContainer"></div>
         </main>
 
-        <!-- साइडबार: जहाँ साइड में विज्ञापन दिखेंगे -->
         <aside>
             <div class="sidebar-ad-card">
                 <p style="font-weight: bold; color: var(--primary); margin-bottom: 8px;">📢 विज्ञापन (Ad Space)</p>
-                <p style="font-size: 0.8rem; color: #777;">यहाँ साइडबार में गूगल एडसेंस या स्पॉन्सर विज्ञापन दिखेंगे। इससे पाठकों की पढ़ाई बाधित नहीं होगी।</p>
+                <p style="font-size: 0.8rem; color: #777;">यहाँ साइडबार में गूगल एडसेंस या स्पॉन्सर विज्ञापन दिखेंगे।</p>
             </div>
         </aside>
     </div>
@@ -364,9 +360,7 @@
                 <option value="छंद">छंद</option>
             </select>
             <textarea id="postContent" rows="5" placeholder="विवरण या सामग्री यहाँ लिखें..."></textarea>
-            
             <input type="url" id="postPdfUrl" placeholder="📄 PDF / ई-बुक डाउनलोड फ़ाइल लिंक (Google Drive/Mediafire)">
-
             <label style="display:block; text-align:left;"><input type="checkbox" id="isPaid"> क्या यह पेड (Paid) सामग्री है?</label>
             <input type="number" id="postPrice" placeholder="कीमत ₹ में (जैसे: 10, 15, 20, 50)" style="display:none;">
             <div style="display:flex; gap:10px; margin-top:10px;">
@@ -397,21 +391,18 @@
         </div>
     </div>
 
-    <!-- भुगतान मोडल (केवल UPI लिंक और QR कोड) -->
+    <!-- भुगतान मोडल -->
     <div id="paymentModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('paymentModal')">&times;</span>
             <h2 style="color: var(--primary);">ऑनलाइन भुगतान करें</h2>
             <p id="payModalText" style="margin: 10px 0; font-weight: bold;"></p>
-            
             <a id="directUpiPayBtn" href="#" class="btn-pay-direct">📲 GPay / PhonePe / Paytm से ₹ पे करें</a>
-
             <div style="background: #FFF8E7; padding: 12px; border-radius: 5px; border: 1px dashed var(--accent); margin: 10px 0;">
                 <p style="font-size: 0.9rem;"><strong>या QR Code स्कैन करके पे करें:</strong></p>
                 <img id="qrCodeImg" src="" alt="UPI QR Code">
                 <p style="font-size: 0.85rem; color: #555; margin-top: 4px;">UPI ID: <strong id="displayUpiId" style="color: var(--primary);"></strong></p>
             </div>
-
             <button class="btn-primary" style="width: 100%; margin-top: 8px; background-color: #777;" onclick="closeModal('paymentModal')">बंद करें</button>
         </div>
     </div>
@@ -440,16 +431,6 @@
                 pdfUrl: "",
                 isPaid: false,
                 price: 0
-            },
-            {
-                id: 2,
-                title: "राजस्थानी लोक साहित्य (ई-बुक)",
-                category: "ई-बुक",
-                author: "रंजू कंवर चारण",
-                content: "इस ई-बुक में राजस्थानी संस्कृति का संपूर्ण विवरण है। भुगतान करके PDF डाउनलोड करें।",
-                pdfUrl: "https://example.com/sample.pdf",
-                isPaid: true,
-                price: 20
             }
         ];
 
@@ -493,7 +474,7 @@
                 let adminControls = isAdmin ? `
                     <div class="admin-btn-group">
                         <button class="btn-edit" onclick="editPost(${post.id})">✏️ एडिट</button>
-                        <button class="btn-danger" onclick="deletePost(${post.id})">❌ बताएं/हटाएं</button>
+                        <button class="btn-danger" onclick="deletePost(${post.id})">❌ हटाएं</button>
                     </div>` : '';
 
                 let pdfLinkHTML = post.pdfUrl ? `<br><a href="${post.pdfUrl}" target="_blank" class="btn-pdf">📄 PDF / ई-बुक डाउनलोड करें</a>` : '';
@@ -530,7 +511,7 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function openPublishModal() {
-            document.getElementById('modalHeading').innerText = "नई रचना / ई-बुक पब्लिश करें";
+            document.getElementById('modalHeading').innerText = "नई रचना / ई-बुक जोड़ें";
             document.getElementById('editPostId').value = '';
             document.getElementById('postTitle').value = '';
             document.getElementById('postContent').value = '';
@@ -544,7 +525,7 @@
         function editPost(id) {
             const post = posts.find(p => p.id === id);
             if (post) {
-                document.getElementById('modalHeading').innerText = "रचना/ई-बुक एडिट करें (सुधार करें)";
+                document.getElementById('modalHeading').innerText = "रचना/ई-बुक एडिट करें";
                 document.getElementById('editPostId').value = post.id;
                 document.getElementById('postTitle').value = post.title;
                 document.getElementById('postCategory').value = post.category;
@@ -590,4 +571,67 @@
         }
 
         function savePost() {
-            const editId = document.
+            const editId = document.getElementById('editPostId').value;
+            const title = document.getElementById('postTitle').value;
+            const category = document.getElementById('postCategory').value;
+            const content = document.getElementById('postContent').value;
+            const pdfUrl = document.getElementById('postPdfUrl').value;
+            const isPaid = document.getElementById('isPaid').checked;
+            const price = document.getElementById('postPrice').value || 0;
+
+            if(!title || !content) {
+                alert('कृपया शीर्षक और विवरण भरें!');
+                return;
+            }
+
+            if (editId) {
+                let post = posts.find(p => p.id == editId);
+                if (post) {
+                    post.title = title;
+                    post.category = category;
+                    post.content = content;
+                    post.pdfUrl = pdfUrl;
+                    post.isPaid = isPaid;
+                    post.price = price;
+                }
+            } else {
+                const newPost = { id: Date.now(), title, category, content, pdfUrl, isPaid, price, author: 'रंजू कंवर चारण' };
+                posts.unshift(newPost);
+            }
+
+            localStorage.setItem('sd_posts', JSON.stringify(posts));
+            displayPosts();
+            closeModal('publishModal');
+        }
+
+        function deletePost(id) {
+            if (confirm('क्या आप सचमुच इस रचना को हटाना चाहते हैं?')) {
+                posts = posts.filter(p => p.id !== id);
+                localStorage.setItem('sd_posts', JSON.stringify(posts));
+                displayPosts();
+            }
+        }
+
+        function openPaymentModal(price, title) {
+            document.getElementById('payModalText').innerText = `"${title}" को अनलॉक करने के लिए ₹${price} का भुगतान करें।`;
+            document.getElementById('displayUpiId').innerText = MY_UPI_ID;
+            
+            const upiLink = `upi://pay?pa=${MY_UPI_ID}&pn=${encodeURIComponent(MY_NAME)}&tn=${encodeURIComponent(title)}&am=${price}&cu=INR`;
+            document.getElementById('directUpiPayBtn').href = upiLink;
+
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+            document.getElementById('qrCodeImg').src = qrUrl;
+
+            openModal('paymentModal');
+        }
+
+        window.onload = function() {
+            const waInfoText = encodeURIComponent(`नमस्ते लेखिका रंजू कंवर जी! मुझे साहित्य ढाणी वेबसाइट के संबंध में जानकारी चाहिए।`);
+            document.getElementById('footerWaBtn').href = `https://wa.me/${MY_WHATSAPP_NUMBER}?text=${waInfoText}`;
+
+            checkAuthStatus();
+            displayPosts();
+        }
+    </script>
+</body>
+</html>
