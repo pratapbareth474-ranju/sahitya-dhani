@@ -91,9 +91,7 @@
         }
 
         @media (max-width: 850px) {
-            .layout-grid {
-                grid-template-columns: 1fr;
-            }
+            .layout-grid { grid-template-columns: 1fr; }
         }
 
         .btn-primary {
@@ -292,6 +290,11 @@
             border-radius: 6px;
             margin-bottom: 15px;
             font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         #qrCodeImg {
@@ -330,8 +333,9 @@
 
     <div class="layout-grid">
         <main>
-            <div id="adminNotice" class="admin-controls">
-                🔐 <strong>एडमिन मोड चालू है:</strong> आप नई रचनाएँ/ई-बुक जोड़ सकते हैं, एडिट कर सकते हैं और हटा सकते हैं।
+            <div id="adminNotice" class="admin-controls" style="display:none;">
+                <span>🔐 <strong>एडमिन मोड चालू है</strong></span>
+                <button class="btn-primary" style="padding: 4px 10px; font-size: 0.85rem;" onclick="openModal('changePassModal')">🔑 पासवर्ड बदलें</button>
             </div>
             <div id="postsContainer"></div>
         </main>
@@ -381,6 +385,18 @@
         </div>
     </div>
 
+    <!-- पासवर्ड बदलने का मोडल -->
+    <div id="changePassModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('changePassModal')">&times;</span>
+            <h2>एडमिन पासवर्ड बदलें</h2>
+            <input type="password" id="oldPass" placeholder="वर्तमान (पुराना) पासवर्ड">
+            <input type="password" id="newPass" placeholder="नया पासवर्ड दर्ज करें">
+            <input type="password" id="confirmNewPass" placeholder="नया पासवर्ड दोबारा लिखें">
+            <button class="btn-primary" style="width:100%; margin-top:10px;" onclick="updateAdminPassword()">पासवर्ड सुरक्षित करें</button>
+        </div>
+    </div>
+
     <!-- पाठक लॉगिन मोडल -->
     <div id="userModal" class="modal">
         <div class="modal-content">
@@ -419,7 +435,6 @@
         const MY_UPI_ID = "7665085315@ybl";
         const MY_NAME = "Ranju Kanwar Charan";
         const MY_WHATSAPP_NUMBER = "918005928244";
-        const ADMIN_PASS = "1234";
 
         let posts = JSON.parse(localStorage.getItem('sd_posts')) || [
             {
@@ -440,7 +455,7 @@
 
             if (isAdmin) {
                 document.getElementById('addPostBtn').style.display = 'inline-block';
-                document.getElementById('adminNotice').style.display = 'block';
+                document.getElementById('adminNotice').style.display = 'flex';
                 document.getElementById('adminLoginBtn').innerText = "एडमिन (लॉगआउट)";
                 document.getElementById('adminLoginBtn').onclick = logoutAdmin;
                 document.getElementById('userLoginBtn').style.display = 'none';
@@ -540,14 +555,45 @@
 
         function loginAdmin() {
             const pass = document.getElementById('adminPassCode').value;
-            if (pass === ADMIN_PASS) {
+            // डिफ़ॉल्ट पासवर्ड '1234' रहेगा, यदि नया सेट किया है तो वो काम करेगा
+            const savedPass = localStorage.getItem('sd_adminPass') || '1234';
+
+            if (pass === savedPass) {
                 localStorage.setItem('sd_isAdmin', 'true');
                 closeModal('adminModal');
+                document.getElementById('adminPassCode').value = '';
                 checkAuthStatus();
                 displayPosts();
             } else {
                 alert('गलत पासकोड! कृपया सही पासकोड दर्ज करें।');
             }
+        }
+
+        function updateAdminPassword() {
+            const oldPassInput = document.getElementById('oldPass').value;
+            const newPassInput = document.getElementById('newPass').value;
+            const confirmPassInput = document.getElementById('confirmNewPass').value;
+            const currentPass = localStorage.getItem('sd_adminPass') || '1234';
+
+            if (oldPassInput !== currentPass) {
+                alert('पुराना पासवर्ड गलत है!');
+                return;
+            }
+            if (!newPassInput || newPassInput.length < 4) {
+                alert('नيا पासवर्ड कम से कम 4 अंकों/अक्षरों का होना चाहिए!');
+                return;
+            }
+            if (newPassInput !== confirmPassInput) {
+                alert('नया पासवर्ड और पुष्टि पासवर्ड मेल नहीं खा रहे हैं!');
+                return;
+            }
+
+            localStorage.setItem('sd_adminPass', newPassInput);
+            alert('पासवर्ड सफलतापूर्वक बदल दिया गया है!');
+            closeModal('changePassModal');
+            document.getElementById('oldPass').value = '';
+            document.getElementById('newPass').value = '';
+            document.getElementById('confirmNewPass').value = '';
         }
 
         function logoutAdmin() {
@@ -575,7 +621,7 @@
             const title = document.getElementById('postTitle').value;
             const category = document.getElementById('postCategory').value;
             const content = document.getElementById('postContent').value;
-            const pdfUrl = document.getElementById('postPdfUrl').value;
+            const pdfUrl = document.getElementById('postPdfUrl.value') || document.getElementById('postPdfUrl').value;
             const isPaid = document.getElementById('isPaid').checked;
             const price = document.getElementById('postPrice').value || 0;
 
