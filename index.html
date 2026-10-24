@@ -358,7 +358,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('publishModal')">&times;</span>
             <h2 id="modalHeading">नई रचना / ई-बुक जोड़ें</h2>
-            <input type="hidden" id="editPostId">
+            <input type="hidden" id="editDocId">
             <input type="text" id="postTitle" placeholder="शीर्षक (Title)">
             <select id="postCategory">
                 <option value="कविता">कविता</option>
@@ -441,7 +441,7 @@
         const MY_NAME = "Ranju Kanwar Charan";
         const MY_WHATSAPP_NUMBER = "918005928244";
 
-        // Firebase Configuration (आपकी प्रोजेक्ट चाबी यहाँ सेट है)
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyC-4-Hc6jS1UoyC4hBdx709ozVc0DY7AE",
             authDomain: "shehita-dhani.firebaseapp.com",
@@ -451,7 +451,6 @@
             appId: "1:141938743753:web:45e5f23ee99298511f018"
         };
 
-        // Initialize Firebase
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
@@ -516,6 +515,7 @@
                 
                 let adminControls = isAdmin ? `
                     <div class="admin-btn-group">
+                        <button class="btn-edit" onclick="editPost('${post.docId}')">✏️ एडिट</button>
                         <button class="btn-danger" onclick="deletePostFromFirebase('${post.docId}')">❌ हटाएँ</button>
                     </div>` : '';
 
@@ -554,7 +554,7 @@
 
         function openPublishModal() {
             document.getElementById('modalHeading').innerText = "नई रचना / ई-बुक जोड़ें";
-            document.getElementById('editPostId').value = '';
+            document.getElementById('editDocId').value = '';
             document.getElementById('postTitle').value = '';
             document.getElementById('postContent').value = '';
             document.getElementById('postPdfUrl').value = '';
@@ -564,7 +564,24 @@
             openModal('publishModal');
         }
 
+        function editPost(docId) {
+            const post = posts.find(p => p.docId === docId);
+            if (post) {
+                document.getElementById('modalHeading').innerText = "रचना/ई-बुक एडिट करें";
+                document.getElementById('editDocId').value = post.docId;
+                document.getElementById('postTitle').value = post.title;
+                document.getElementById('postCategory').value = post.category;
+                document.getElementById('postContent').value = post.content;
+                document.getElementById('postPdfUrl').value = post.pdfUrl || '';
+                document.getElementById('isPaid').checked = post.isPaid || false;
+                document.getElementById('postPrice').value = post.price || '';
+                document.getElementById('postPrice').style.display = post.isPaid ? 'block' : 'none';
+                openModal('publishModal');
+            }
+        }
+
         function savePostToFirebase() {
+            const editDocId = document.getElementById('editDocId').value;
             const title = document.getElementById('postTitle').value;
             const category = document.getElementById('postCategory').value;
             const content = document.getElementById('postContent').value;
@@ -577,7 +594,7 @@
                 return;
             }
 
-            db.collection("posts").add({
+            const postData = {
                 title: title,
                 category: category,
                 content: content,
@@ -586,12 +603,25 @@
                 price: price,
                 author: 'रंजू कंवर चारण',
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                alert("रचना सफलतापूर्वक ऑनलाइन डेटाबेस में सुरक्षित हो गई!");
-                closeModal('publishModal');
-            }).catch((error) => {
-                alert("सुरक्षित करने में त्रुटि: " + error.message);
-            });
+            };
+
+            if (editDocId) {
+                // अपडेट पुरानी रचना
+                db.collection("posts").doc(editDocId).update(postData).then(() => {
+                    alert("रचना सफलतापूर्वक अपडेट हो गई!");
+                    closeModal('publishModal');
+                }).catch((error) => {
+                    alert("अपडेट में त्रुटि: " + error.message);
+                });
+            } else {
+                // जोड़ें नई रचना
+                db.collection("posts").add(postData).then(() => {
+                    alert("रचना सफलतापूर्वक सुरक्षित हो गई!");
+                    closeModal('publishModal');
+                }).catch((error) => {
+                    alert("सुरक्षित करने में त्रुटि: " + error.message);
+                });
+            }
         }
 
         function deletePostFromFirebase(docId) {
