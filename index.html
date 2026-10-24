@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>साहित्य ढाणी | लेखिका रंजू कंवर चारण</title>
     <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Yatra+One&family=Martel:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK Links -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
     <style>
         :root {
             --primary: #8B263E;
@@ -337,7 +342,7 @@
                 <span>🔐 <strong>एडमिन मोड चालू है</strong></span>
                 <button class="btn-primary" style="padding: 4px 10px; font-size: 0.85rem;" onclick="openModal('changePassModal')">🔑 पासवर्ड बदलें</button>
             </div>
-            <div id="postsContainer"></div>
+            <div id="postsContainer">🔄 सामग्री लोड हो रही है...</div>
         </main>
 
         <aside>
@@ -348,7 +353,7 @@
         </aside>
     </div>
 
-    <!-- नई/एडिट रचना एवं ई-बुक पब्लिश फॉर्म -->
+    <!-- नई/एडिट रचना फॉर्म -->
     <div id="publishModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('publishModal')">&times;</span>
@@ -368,7 +373,7 @@
             <label style="display:block; text-align:left;"><input type="checkbox" id="isPaid"> क्या यह पेड (Paid) सामग्री है?</label>
             <input type="number" id="postPrice" placeholder="कीमत ₹ में (जैसे: 10, 15, 20, 50)" style="display:none;">
             <div style="display:flex; gap:10px; margin-top:10px;">
-                <button class="btn-primary" onclick="savePost()">सुरक्षित करें</button>
+                <button class="btn-primary" onclick="savePostToFirebase()">सुरक्षित करें</button>
                 <button onclick="closeModal('publishModal')">रद्द करें</button>
             </div>
         </div>
@@ -417,7 +422,7 @@
             <div style="background: #FFF8E7; padding: 12px; border-radius: 5px; border: 1px dashed var(--accent); margin: 10px 0;">
                 <p style="font-size: 0.9rem;"><strong>या QR Code स्कैन करके पे करें:</strong></p>
                 <img id="qrCodeImg" src="" alt="UPI QR Code">
-                <p style="font-size: 0.85rem; color: #555; margin-top: 4px;">UPI ID: <strong id="displayUpiId" style="color: var(--primary);"></strong></p>
+                <p style="font-size: 0.85rem; color: #555; margin-top: 4px;">UPI ID: <strong id="displayUpiId" style="color: var(--primary);">7665085315@ybl</strong></p>
             </div>
             <button class="btn-primary" style="width: 100%; margin-top: 8px; background-color: #777;" onclick="closeModal('paymentModal')">बंद करें</button>
         </div>
@@ -436,18 +441,36 @@
         const MY_NAME = "Ranju Kanwar Charan";
         const MY_WHATSAPP_NUMBER = "918005928244";
 
-        let posts = JSON.parse(localStorage.getItem('sd_posts')) || [
-            {
-                id: 1,
-                title: "केसरिया बालम री हेत",
-                category: "कविता",
-                author: "रंजू कंवर चारण",
-                content: "मरुधरा री पावन माटी, गावे रीत अणेक।\nकेसरिया बालम आवो नी, पधारो म्हारे देस।",
-                pdfUrl: "",
-                isPaid: false,
-                price: 0
-            }
-        ];
+        // Firebase Configuration (आपकी प्रोजेक्ट चाबी यहाँ सेट है)
+        const firebaseConfig = {
+            apiKey: "AIzaSyC-4-Hc6jS1UoyC4hBdx709ozVc0DY7AE",
+            authDomain: "shehita-dhani.firebaseapp.com",
+            projectId: "shahita-dhani",
+            storageBucket: "shahita-dhani.firebasestorage.app",
+            messagingSenderId: "141938743753",
+            appId: "1:141938743753:web:45e5f23ee99298511f018"
+        };
+
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
+        let posts = [];
+
+        function loadPostsFromFirebase() {
+            db.collection("posts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+                posts = [];
+                snapshot.forEach((doc) => {
+                    posts.push({ docId: doc.id, ...doc.data() });
+                });
+                displayPosts();
+            }, (error) => {
+                console.error("Firebase fetch error: ", error);
+                document.getElementById('postsContainer').innerHTML = "<p style='text-align:center;'>डेटा लोड करने में समस्या आ रही है।</p>";
+            });
+        }
 
         function checkAuthStatus() {
             const isAdmin = localStorage.getItem('sd_isAdmin') === 'true';
@@ -482,14 +505,18 @@
             const isAdmin = localStorage.getItem('sd_isAdmin') === 'true';
             const filtered = filter === 'all' ? posts : posts.filter(p => p.category === filter);
 
+            if(filtered.length === 0) {
+                container.innerHTML = "<p style='text-align:center; padding: 2rem; color: #666;'>यहाँ अभी कोई रचना उपलब्ध नहीं है।</p>";
+                return;
+            }
+
             filtered.forEach(post => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 
                 let adminControls = isAdmin ? `
                     <div class="admin-btn-group">
-                        <button class="btn-edit" onclick="editPost(${post.id})">✏️ एडिट</button>
-                        <button class="btn-danger" onclick="deletePost(${post.id})">❌ बताएं/हटाएं</button>
+                        <button class="btn-danger" onclick="deletePostFromFirebase('${post.docId}')">❌ हटाएँ</button>
                     </div>` : '';
 
                 let pdfLinkHTML = post.pdfUrl ? `<br><a href="${post.pdfUrl}" target="_blank" class="btn-pdf">📄 PDF / ई-बुक डाउनलोड करें</a>` : '';
@@ -511,7 +538,7 @@
                     ${adminControls}
                     <span class="badge">${post.category}</span>
                     <h2>${post.title}</h2>
-                    <small style="color:#666;">लेखिका: ${post.author}</small>
+                    <small style="color:#666;">लेखिका: ${post.author || 'रंजू कंवर चारण'}</small>
                     ${contentHTML}
                 `;
                 container.appendChild(card);
@@ -537,19 +564,41 @@
             openModal('publishModal');
         }
 
-        function editPost(id) {
-            const post = posts.find(p => p.id === id);
-            if (post) {
-                document.getElementById('modalHeading').innerText = "रचना/ई-बुक एडिट करें";
-                document.getElementById('editPostId').value = post.id;
-                document.getElementById('postTitle').value = post.title;
-                document.getElementById('postCategory').value = post.category;
-                document.getElementById('postContent').value = post.content;
-                document.getElementById('postPdfUrl').value = post.pdfUrl || '';
-                document.getElementById('isPaid').checked = post.isPaid;
-                document.getElementById('postPrice').value = post.price;
-                document.getElementById('postPrice').style.display = post.isPaid ? 'block' : 'none';
-                openModal('publishModal');
+        function savePostToFirebase() {
+            const title = document.getElementById('postTitle').value;
+            const category = document.getElementById('postCategory').value;
+            const content = document.getElementById('postContent').value;
+            const pdfUrl = document.getElementById('postPdfUrl').value;
+            const isPaid = document.getElementById('isPaid').checked;
+            const price = document.getElementById('postPrice').value || 0;
+
+            if(!title || !content) {
+                alert('कृपया शीर्षक और विवरण भरें!');
+                return;
+            }
+
+            db.collection("posts").add({
+                title: title,
+                category: category,
+                content: content,
+                pdfUrl: pdfUrl,
+                isPaid: isPaid,
+                price: price,
+                author: 'रंजू कंवर चारण',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                alert("रचना सफलतापूर्वक ऑनलाइन डेटाबेस में सुरक्षित हो गई!");
+                closeModal('publishModal');
+            }).catch((error) => {
+                alert("सुरक्षित करने में त्रुटि: " + error.message);
+            });
+        }
+
+        function deletePostFromFirebase(docId) {
+            if (confirm('क्या आप सचमुच इस रचना को हटाना चाहते हैं?')) {
+                db.collection("posts").doc(docId).delete().then(() => {
+                    alert("रचना हटा दी गई है।");
+                });
             }
         }
 
@@ -579,20 +628,17 @@
                 return;
             }
             if (!newPassInput || newPassInput.length < 4) {
-                alert('नया पासवर्ड कम से कम 4 अंकों/अक्षरों का होना चाहिए!');
+                alert('नया पासवर्ड कम से कम 4 अंकों का होना चाहिए!');
                 return;
             }
             if (newPassInput !== confirmPassInput) {
-                alert('नया पासवर्ड और पुष्टि पासवर्ड मेल नहीं खा रहे हैं!');
+                alert('नया पासवर्ड और पुष्टि पासवर्ड मेल नहीं खा रहे!');
                 return;
             }
 
             localStorage.setItem('sd_adminPass', newPassInput);
             alert('पासवर्ड सफलतापूर्वक बदल दिया गया है!');
             closeModal('changePassModal');
-            document.getElementById('oldPass').value = '';
-            document.getElementById('newPass').value = '';
-            document.getElementById('confirmNewPass').value = '';
         }
 
         function logoutAdmin() {
@@ -615,51 +661,8 @@
             checkAuthStatus();
         }
 
-        function savePost() {
-            const editId = document.getElementById('editPostId').value;
-            const title = document.getElementById('postTitle').value;
-            const category = document.getElementById('postCategory').value;
-            const content = document.getElementById('postContent').value;
-            const pdfUrl = document.getElementById('postPdfUrl').value;
-            const isPaid = document.getElementById('isPaid').checked;
-            const price = document.getElementById('postPrice').value || 0;
-
-            if(!title || !content) {
-                alert('कृपया शीर्षक और विवरण भरें!');
-                return;
-            }
-
-            if (editId) {
-                let post = posts.find(p => p.id == editId);
-                if (post) {
-                    post.title = title;
-                    post.category = category;
-                    post.content = content;
-                    post.pdfUrl = pdfUrl;
-                    post.isPaid = isPaid;
-                    post.price = price;
-                }
-            } else {
-                const newPost = { id: Date.now(), title, category, content, pdfUrl, isPaid, price, author: 'रंजू कंवर चारण' };
-                posts.unshift(newPost);
-            }
-
-            localStorage.setItem('sd_posts', JSON.stringify(posts));
-            displayPosts();
-            closeModal('publishModal');
-        }
-
-        function deletePost(id) {
-            if (confirm('क्या आप सचमुच इस रचना को हटाना चाहते हैं?')) {
-                posts = posts.filter(p => p.id !== id);
-                localStorage.setItem('sd_posts', JSON.stringify(posts));
-                displayPosts();
-            }
-        }
-
         function openPaymentModal(price, title) {
             document.getElementById('payModalText').innerText = `"${title}" को अनलॉक करने के लिए ₹${price} का भुगतान करें।`;
-            document.getElementById('displayUpiId').innerText = MY_UPI_ID;
             
             const upiLink = `upi://pay?pa=${MY_UPI_ID}&pn=${encodeURIComponent(MY_NAME)}&tn=${encodeURIComponent(title)}&am=${price}&cu=INR`;
             document.getElementById('directUpiPayBtn').href = upiLink;
@@ -675,7 +678,7 @@
             document.getElementById('footerWaBtn').href = `https://wa.me/${MY_WHATSAPP_NUMBER}?text=${waInfoText}`;
 
             checkAuthStatus();
-            displayPosts();
+            loadPostsFromFirebase();
         }
     </script>
 </body>
